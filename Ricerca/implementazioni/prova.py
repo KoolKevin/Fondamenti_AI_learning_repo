@@ -40,7 +40,7 @@ def generate_maze(screen, start, end):
                 stack.append((nx, ny)) # per dfs
                 # stack.insert(0, (nx, ny)) # per bfs (non è che generi un buon labirinto)
 
-                time.sleep(0.1) # per la visualizzazione
+                time.sleep(0.05) # per la visualizzazione
                 draw_grid(screen, grid, start, end)
                 break
         # in python un for può avere un else che viene eseguito 
