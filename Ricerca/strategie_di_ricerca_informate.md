@@ -76,33 +76,48 @@ come si trova la funzione euristica?
 
 
 
-
-
-
-
-
-
-
-
-
-
 ## Da alberi a grafi
-se il problema ha uno spazio ha grafo lo posso comunque esplorare ad albero, ripeterò l'esplorazione di alcuni nodi su cui sono già passato
-...
+Abbiamo assunto fin qui che lo spazio di ricerca sia un albero e non un grafo.
+- Non è quindi possibile raggiungere lo stesso stato da strade diverse.
+- Se ci sono più strade si procede di nuovo all’espansione dello stato come se fosse nuovo (loop che mi fa fare avanti e indietro).
+- Non si tiene quindi traccia degli stati già considerati.
 
-lista dei nodi chiusi
+RIPETO: se il problema ha uno spazio ha grafo lo posso comunque esplorare ad albero, ripeterò l'esplorazione di alcuni nodi su cui sono già passato (magari anche entrando in loop, vedi DFS)
+
+L'assunzione è ovviamente semplicistica, come si estendono gli algoritmi precedenti per trattare con i grafi?
+- Si deve tenere memoria non solo dei nodi da espandere (nodi aperti) **ma anche dei nodi/stati già espansi** (nodi chiusi)
+    - non ho più solo la lista dei nodi di frontiera ma anche la lista dei nodi chiusi
+
+**A* su grafi e ottimalità**
+- Se utilizziamo closed (lista dei nodi chiusi) solo per evitare l’espansione ulteriore dei nodi che hanno stati in essa contenuti, siamo relativamente efficienti, ma potremmo non trovare la strada migliore.
+- Nel caso dei grafi diventa possibile trovare un nuovo percorso per raggiungere uno stato già espanso con costo minore!
+
+Con una funzione euristica che da una stima troppo ottimista in alcuni nodi (B), C è espanso prima di trovare la strada alternativa che passa per A.
+
+Nel caso dei grafi, per far si che A* continui a trovare la soluzione ottima, bisogna imporre un'ulteriore condizione sulla funzione euristica:
+
+**Consistenza (o monotonicità)**:
+una euristica è consistente se per ogni nodo n, ogni successore n' di n generato da ogni azione a, vale:
+- h(n) = 0 se lo stato corrispondente coincide con il goal, altrimenti
+- h(n) ≤ c(n,a,n') + h(n‘)
+    - disuguaglianza triangolare
+    - // posso arrivare ad n' con più azioni in generale
+
+Con la monotonicità ogni nodo è raggiunto per la prima volta mediante la strada migliore e quindi può essere inserito nella lista dei nodi chiusi senza preoccupazioni.
+- g(n) valuta sempre la distanza minima dello stato/nodo dal nodo di partenza.
 
 
+Theorema: Se h(n) e’ consistente, A* usando GRAPH-SEARCH e’ ottimale
+- inoltre, f(n) non decresce mai lungo un cammino (il costo dell'azione è sempre maggiore rispetto a quello della stima dell'euristica).
 
-consistenza
 
-non necessariamente è necessaria la consistenza (vedi riespansione dei nodi della lista chiusa)
+**OSS**: Nel caso in cui si utilizzi un’euristica ammissibile, ma non consistente per mantenere l’ottimalità l’algoritmo si complica inserendo in closed gli stati con il loro costo (g(n)) e riespandendo nuovi nodi n con stato già considerrato (e in closed) se sono stati raggiunti da strade a minor costo g(n).
 - confronta con Dijkstra
 
 
 
 
-
+## Algoritmi costruttivi e algoritmi di ricerca locale
 
 ## Ricerca locale
 approccio alternativo
@@ -111,10 +126,12 @@ approccio alternativo
 
 
 
+## Metaeuristiche
 
 
 
-## Altre tecniche euristiche
+
+### Altre tecniche euristiche
 multipli nodi della frontiera hanno la stessa funzione di valutazione
 - quale scegliere?
 - non determinismo!

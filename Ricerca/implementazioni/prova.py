@@ -32,6 +32,7 @@ def generate_maze(screen, start, end):
         random.shuffle(DIRECTIONS)  # Mischia le direzioni per generare percorsi casuali
         for dx, dy in DIRECTIONS:
             nx, ny = x + dx, y + dy
+            # print(f"parto da ({x};{y}) e provo a controllare ({nx};{ny})")
             # se il punto trovato è un muro appartenente alla griglia lo "scavo"
             if 1 <= nx < GRID_SIZE and 1 <= ny < GRID_SIZE and grid[nx][ny] == 1:
                 grid[nx][ny] = 0  # Apri il percorso
@@ -39,8 +40,7 @@ def generate_maze(screen, start, end):
                 grid[x + dx // 2][y + dy // 2] = 0  
                 stack.append((nx, ny)) # per dfs
                 # stack.insert(0, (nx, ny)) # per bfs (non è che generi un buon labirinto)
-
-                time.sleep(0.05) # per la visualizzazione
+                time.sleep(0.02) # per la visualizzazione
                 draw_grid(screen, grid, start, end)
                 break
         # in python un for può avere un else che viene eseguito 
@@ -63,7 +63,7 @@ def draw_grid(screen, grid, start, end):
                 pygame.draw.rect(screen, RED, rect)  # Fine
             else:
                 pygame.draw.rect(screen, WHITE, rect)  # Percorso
-            pygame.draw.rect(screen, BLUE, rect, 1)  # Griglia
+            # pygame.draw.rect(screen, BLUE, rect, 1)  # Griglia
     pygame.display.update()
 
 def main():

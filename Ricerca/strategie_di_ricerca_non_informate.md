@@ -9,7 +9,7 @@ Una volta che viene trovata la soluzione, le azioni suggerite possono essere rea
 
 Generare sequenze di azioni:
 - **Espansione**: si parte da uno stato e applicando tutti gli operatori possibili (o la funzione successore) si generano nuovi stati. 
-- **Operatore**: un'azione possibile disponibile da parte dell’agente. Equivalentemente, una funzione successore S(x) definita come come coppia \<azione, stato corrente>
+- **Operatore**: un'azione possibile disponibile da parte dell’agente. Equivalentemente, una funzione successore S(x) definita come come coppia <azione, stato corrente>
 - **Strategia di ricerca**: definisce quale dei nodi della frontiera scelgo per l'espansione
 
 Come trovo il goal?
@@ -25,7 +25,24 @@ Albero di ricerca: rappresenta l’espansione degli stati a partire dallo stato 
 
 
 
+--- 
+Nel contesto degli algoritmi di ricerca nello spazio degli stati, i concetti di azione e operatore sono strettamente collegati, ma hanno significati distinti:
 
+**Operatore**
+Un operatore è una funzione astratta che descrive come si può trasformare uno stato in un altro. È una regola generale che specifica una transizione possibile nello spazio degli stati.
+
+✅ Esempio: In un problema di spostamento di un robot su una griglia, un operatore potrebbe essere "Muovi a destra" o "Muovi in alto".
+
+Formalmente, un operatore può essere visto come una funzione:
+
+𝑂 (𝑠) = 𝑠′;     dove 𝑠 è lo stato attuale e 𝑠′ è il nuovo stato generato dall'operatore.
+
+**Azione**
+Un'azione è un'istanza specifica di un operatore applicata a un determinato stato. Rappresenta un'applicazione concreta dell'operatore in un certo momento del processo di ricerca.
+
+✅ Esempio: Se il robot si trova nella posizione 
+(2,3) e applica l'operatore "Muovi a destra", allora l'azione specifica è "Muoversi da (2,3) a (2,4)".
+--- 
 
 
 Struttura dati per l'albero di ricerca:
