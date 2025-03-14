@@ -79,7 +79,7 @@ Garantisce complettezza e ottimalità (se il costo coincide con la profondità, 
 
 
 ### Ricerca a costo uniforme
-generalizzazione della BFS in cui non si considera la profondità (ovvero tutti le espansioni hanno costo 1) ma il costo del cammino. non è un'informazione euristica!
+generalizzazione della BFS in cui non si considera la profondità (ovvero tutte le espansioni hanno costo 1) ma il costo del cammino per raggiungere un determinato nodo n (non è un'informazione euristica!)
 
 **OSS**: anche se G è il goal non lo espande dato che B è più promettente. e faccio bene dato che trovo una soluzione ottimale.
 
