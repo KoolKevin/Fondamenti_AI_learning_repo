@@ -9,6 +9,12 @@ Algoritmo assolutamente generale
 ...
 utili per categorizzare la maggior parte dei problemi di AI, non per risolverli
 
+**Lo Spazio degli Stati è Caratterizzato da**:
+-  Uno stato iniziale in cui l’agente sa di trovarsi (non noto a priori);
+- Un insieme di azioni possibili che sono disponibili da parte dell’agente (insieme operatori che trasformano uno stato in un altro o più formalmente una funzione successore S(X) che riceve in ingresso uno stato e restituisce l’insieme degli stati raggiungibili).
+    - mi permette di generare le prossime mosse disponibili dato uno stato
+- Un cammino è una sequenza di azioni che conduce da uno statoa un altro
+
 
 ### Soluzione del problema come ricerca in uno spazio degli stati
 definizione di funzione successore come operatore di base che mi fa passare da uno stato all'altro
