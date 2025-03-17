@@ -23,6 +23,10 @@ Abbiamo sempre una ricerca nello spazio degli stati, la differenza sta nel fatto
 
 
 ### ALGORITMO MIN-MAX
+```
+Guardo gli stati finali possibili, decido se ho vinto/perso, risalgo l'albero e adesso posso decidere quali sono le strade vincenti e quali sono quelle perdenti
+```
+
 L’algoritmo minmax è progettato per determinare la strategia ottimale per “Max” e per suggerirgli **la prima mossa migliore da compiere**;
 - per fare questo, ipotizza che “Min” faccia la scelta a lui più favorevole.
 - Non è interessante la “strada”, ma solo la prossima mossa
@@ -59,7 +63,7 @@ conclusione: in ogni caso bisogna potare l'albero
 
 **La soluzione (Shannon, 1949)**: si guarda avanti solo per un po' e si valutano le mosse fino ad un nodo non terminale ritenuto di successo. In pratica si applica minimax fino ad una certa profondità.
 
-Utilizzo una certa funzione di valutazione per stimare la bontà di un certo nodo.
+Utilizzo una certa funzione di valutazione (**che sarà un euristica**) per stimare la bontà di un certo nodo.
 - e(n) = -1 sicuramente vincente per min;
 - e(n) = +1 sicuramente vincente per max;
 - e(n) = 0 circa le stesse probabilità;
@@ -70,7 +74,13 @@ Trade-off fra ricerca e funzione di valutazione e(n)
 - min-max fino ad una certa profondità
 
 
-**ALGORITMO MIN-MAX RIVISTO**
+
+
+
+
+**ALGORITMO MIN-MAX RIVISTO 2**
+Posso decidere di non esplorare non solamente quando raggiungo una soglia di profondità, l'algoritmo generale ha questa forma:
+
 Per valutare un nodo n in un albero di gioco:
 1. Metti in L = (n) i nodi non ancora espansi.
 2. Sia x il primo nodo in L. Se x = n e c'è un valore assegnato a esso ritorna questo valore.
@@ -121,3 +131,10 @@ Tagli Alpha-Beta
 
 **Caratteristica interessante**: dobbiamo sempre esplorare almeno il ramo più a sinistra
 
+
+### Efficacia dei tagli
+All'inizio devo cercare qualcosa se no non ho alcuna valore di alfa beta. L'algoritmo funziona bene quindi se la prima esplorazione che faccio è una strada intelligente, dato che questo mi porterà ad avere molti tagli.
+- chiaramente all'inizio non so quale strada è intelligente
+- posso però utilizzare una funziona euristica di nuovo
+
+**ESAME**: i nodi della frontiera sono già ordinati secondo un'euristica data
