@@ -82,6 +82,7 @@ Alfabeto, che consiste di cinque insiemi:
 - l'insieme dei simboli di **predicato** (o relazione), P;
     - generalmente n-ari
     - generica relazione, che **può essere vera o falsa** fra “n” oggetti del dominio del discorso.
+        - esprime una proprietà o una relazione tra oggetti.
     - Es. parente(giovanna, maria)
     - **NB**: si differenziano rispetto alle altre entità sintattiche, in quanto solamente a loro si applica la domanda "è vero/falso?"  
         - implicano valutazione
@@ -127,4 +128,40 @@ Abbiamo una difficoltà, accennata nell'osservazione importante di sopra.
 ```Ogni formula atomica o composta della logica dei predicati del primo ordine può assumere il valore vero o falso in base alla frase che rappresenta nel dominio del discorso.```
 
 Come risolvere?
+
+
+**interpretazine**
+Dato un linguaggio del primo ordine L, un'interpretazione per L definisce un dominio non vuoto D e assegna:
+- a ogni simbolo di costante in C, una costante in D;
+- a ogni simbolo di funzione n-ario F, una funzione:
+    - F: D^n -> D;
+- a ogni simbolo di predicato n-ario in P una relazione in D^n, cioè un sottoinsieme di D^n.
+    - In altre parole, la relazione associata al predicato n-ario 𝑃 contiene tutte le n-uple ordinate di elementi di 𝐷 per cui il predicato 𝑃 è "vero
+
+Esempio: Linguaggio del primo ordine, L, nel quale si ha una costante “0”, un simbolo di funzione unaria “s” e un simbolo di predicato binario “p”.
+- Interpretazione I1, D: numeri naturali.
+    - "0" rappresenta il numero zero.
+    - "s" rappresenta il successore di un numero naturale
+    - "p" rappresenta la relazione binaria "<="
+- Interpretazione I2, D: numeri interi negativi.
+    - "0" rappresenta il numero zero.
+    - "s" rappresenta il predecessore di un numero naturale
+    - "p" rappresenta la relazione binaria "<="
+
+**modelli**
+Data un'interpretazione I e una fbf F, **I è un modello per F se e solo se F è vera in I**.
+- Esempio: Per la fbf: per ogni Y p(0,Y) l’interpretazione I1 è un modello, mentre I2 non lo è.
+
+Una **fbf è soddisfacibile** se e solo se è vera almeno in una interpretazione,
+- ovvero se esiste almeno un modello per essa.
+
+Una fbf che ha valore vero per tutte le possibili interpretazioni è detta **logicamente valida**.
+- ogni possibile interpretazione è un modello
+
+Un insieme di formule del primo ordine S è soddisfacibile, se esiste una interpretazione I che **soddisfa tutte le formule di S**
+- I è un modello per ciascuna formula di S.
+- Tale interpretazione è detta modello di S.
+
+**conseguenza logica**
+Una formula F segue logicamente (o è conseguenza logica) da un insieme di formule S (e si scrive S |= F), se e solo se **OGNI interpretazione I che è un modello per S, è un modello per F**
 
