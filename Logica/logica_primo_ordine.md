@@ -16,3 +16,5 @@ Siamo sicuri di aver mantenuto il significato della formula originale? NO, abbia
 8. 
 
 **NB**: Questi passaggi li posso applicare per qualsiasi formula di una logica del primo ordine. Ci arrivo sempre (inference engine)
+
+Ricorda: T è ottenuto come assiomi + una formula negata ~F, se la teoria è insoddisfacibile allora F è conseguenza logica degli assiomi
