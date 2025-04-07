@@ -164,4 +164,50 @@ Un insieme di formule del primo ordine S è soddisfacibile, se esiste una interp
 
 **conseguenza logica**
 Una formula F segue logicamente (o è conseguenza logica) da un insieme di formule S (e si scrive S |= F), se e solo se **OGNI interpretazione I che è un modello per S, è un modello per F**
+- idea: teorema di pitagora è conseguenza logica dei 5 assiomi della geometria euclidea 
+
+```**NMB**: ragionare per conseguenze logiche è ciò che ci fà scavallare il problema dell'interpretazione! Possiamo lasciare stare l'interpretazione, basta essere daccordo sull'insieme di formule S di partenza e da questo siamo sicuri che qualunque risultato ottenuto è per forza vero anche per altre interpretazioni (...)```
+- attenzione bisogna però dimostrare che ogni modello di S è un modello anche per F
+- la seconda proprietà sull'insoddisfacibilità dell'unione aiuta (assurdi) ma conviene a lavorare a livello sintattico (sostituzione di simboli) piuttosto che semantico (interpretazioni, modelli)
+
+
+
+
+### Regole di inferenza
+sono criteri di manipolazione sintattica, ovvero regole che derivano fbf da altre fbf
+- voglio dimenticarmi di che cosa significano i simboli (semantica), voglio solo delle regole con cui posso arrivare ad un risultato vero/falso 
+- esempio dell'aritmentica delle elementari (3+3 lo sostituisco con 6 e non mi preoccupo più di tanto)
+
+- modus ponens
+- specializzazione
+- abduzione 
+    - ipotizzo A se vedo B, A->B 
+    - diagnosi, ipotesi
+    - come gia detto sopra, non sempre corretto
+- induzione
+    - osservando A(t1), A(t2), ... A(tn) dico: per ogni x A(x)
+    - generalizzare concetti da esperienze
+    - anche questo non sempre corretto
+
+
+**Teoria assiomatica**: insieme di fbf assiomatice e insieme di regole di sostituzione
+
+**Decidibilità**
+...
+
+**Correttezza e completezza**
+- correttezza (soundness): la derivazione produce solo sentenze che sono conseguenza logica.
+    - abduzione non è corretta
+- completezza (completeness): la derivazione puo’ prdurre tutte le conseguenze logiche
+    - le regole di inferenza non sono complete (decidibilità)
+
+
+
+**Monotonicità**
+
+se aggiungo degli assiomi, quest'ultimi non mi invalidano i teoremi che ho gia ottenuto con solo gli assiomi precedenti
+
+Assunzione del mondo chiuso:
+"ragionamenti per DB", se non c'è nel DB allora è falso
+- il DB è il mio mondo
 
