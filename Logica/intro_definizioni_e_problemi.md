@@ -13,19 +13,19 @@
 - **La logica è la “grammatica” del ragionamento**: stabilisce le regole su come “giocare bene” con le idee.
 
 **Classificazioni**:
-- Ragionamento deduttivo (sillogismo aristotelico – logica deduttiva):
+- **Ragionamento deduttivo** (sillogismo aristotelico – logica deduttiva):
     - Da: Tutti gli uomini sono mortali e Socrate è un uomo -> allora: Socrate è mortale
     - Corretto, ma **non ci consente di “imparare” nuova conoscenza.**
 
-- Ragionamento induttivo (apprendimento, deduzione inversa)
+- **Ragionamento induttivo** (apprendimento, deduzione inversa)
     - Dall'osservazione di svariati uccelli che volano allora Tutti gli uccelli volano (e i pinguini?).
     - Produzione di conoscenza “nuova”, **a scapito della correttezza**.
 
-- Ragionamento ipotetico o abduttivo (duale del deduttivo):
+- **Ragionamento ipotetico o abduttivo** (duale del deduttivo):
     - Dall’osservazione della morte di Socrate e sapendo che Tutti gli uomini sono mortali ipotizza che Socrate è un uomo. (e se fosse un gatto?).
     - Risale alle cause mediante l’osservazione degli effetti a scapito della correttezza.
 
-- Ragionamento per analogia (metaforico, case-based)
+- **Ragionamento per analogia** (metaforico, case-based)
     - Non richiede un modello o molti dati, ma utilizza il principio di somiglianza. Socrate e Giovanni si “assomigliano” e Socrate ama la filosofia allora: Giovanni ama la filosofia.
     - K-Nearest-Neighbor e Support Vector Machine (SVM).
     - Utilizzo di vincoli, probabilità, statistica (teorema di Bayes)
@@ -103,6 +103,7 @@ Date queste definizioni principali possiamo definire:
     - se f è un simbolo di funzione n-aria e t1,...tn sono termini, allora f(t1,...,tn) è un termine.
 
 - **Atomo** o formula atomica:
+    - un predicato con dentro dei termini
     - la minima cosa valutabile come T/F
     - l’applicazione di un simbolo di predicato n-ario p a n termini t1,...,tn: p(t1,..,tn). 
 
@@ -112,7 +113,9 @@ Date queste definizioni principali possiamo definire:
 **Letterale**: fbf atomica o la sua negazione.
 
 
-
+- **Formule chiuse**: fbf che non contengono alcuna variabile libera. Ad esempio, le formule (E1), (E2) ed (E3) sono fbf chiuse. Nel seguito considereremo solo formule fbf chiuse.
+- **Formule ground**: formule che non contengono variabili. Ad esempio la formula (E1) è una formula “ground”.
+- **Varianti**: una formula F2, ottenuta rinominando le variabili di una formula F1, è detta variante di F1.
 
 ### Semantica
 ```bisogna capire implicazioni ed equivalenze come funzionano```
@@ -166,15 +169,63 @@ Un insieme di formule del primo ordine S è soddisfacibile, se esiste una interp
 Una formula F segue logicamente (o è conseguenza logica) da un insieme di formule S (e si scrive S |= F), se e solo se **OGNI interpretazione I che è un modello per S, è un modello per F**
 - idea: teorema di pitagora è conseguenza logica dei 5 assiomi della geometria euclidea 
 
-```**NMB**: ragionare per conseguenze logiche è ciò che ci fà scavallare il problema dell'interpretazione! Possiamo lasciare stare l'interpretazione, basta essere daccordo sull'insieme di formule S di partenza e da questo siamo sicuri che qualunque risultato ottenuto è per forza vero anche per altre interpretazioni (...)```
+```**NMB**: ragionare per conseguenze logiche è ciò che ci fà scavallare il problema dell'interpretazione! Possiamo lasciare stare l'interpretazione, basta essere daccordo sull'insieme di formule S di partenza e da questo siamo sicuri che qualunque risultato ottenuto è per forza vero anche per altre interpretazioni (che sono un modello per gli assiomi di partenza)```
 - attenzione bisogna però dimostrare che ogni modello di S è un modello anche per F
-- la seconda proprietà sull'insoddisfacibilità dell'unione aiuta (assurdi) ma conviene a lavorare a livello sintattico (sostituzione di simboli) piuttosto che semantico (interpretazioni, modelli)
+
+**Proprietà**:
+- Se una fbf F segue logicamente da S (S |= F), allora l'insieme S U {~F} è insoddisfacibile.
+    - ogni modello di S è un antimodello di F e viceversa
+- Viceversa, se S U {~F} è insoddisfacibile (e S era soddisfacibile), allora F segue logicamente da S. 
+    - significa che ogni interpretazione che rende valida S non va bene per ~F, e viceversa
+    - dimostrazioni per assurdo
+
+I **sistemi di refutazione** si basano su questa proprietà:
+
+```per dimostrare S |= F, supposto S soddisfacibile, è sufficiente dimostrare che S U {~F} è insoddisfacibile.```
+
+Problema interessante:
+Determinare se una formula F segue logicamente da S (ovvero che S È {~F} è insoddisfacibile) **utilizzando solo semplici trasformazioni sintattiche** (regole di inferenza), possibilmente ripetitive e quindi automatizzabili, e non introducendo concetti quali significato o interpretazione o modello.
+
+**conclusione**: è più semplice lavorare a livello sintattico (sostituzione di simboli) piuttosto che semantico (significati, interpretazioni, modelli)
+
+![alt text](immagini/logica_semantica_sintassi.png)
+
+Parte Semantica
+- "Proposizioni vere": sono affermazioni che sono **vere in un certo modello** (es. "Tutti gli esseri umani sono mortali").
+- "modelli": indica che la verità delle proposizioni è valutata rispetto a una certa interpretazione 
+- "conseguenze logiche": sono le affermazioni che devono essere vere, dato che le proposizioni iniziali lo sono in tutti i modelli in cui esse sono vere.
+- Questo è il significato semantico di "essere conseguenza logica": vale in tutti i modelli in cui valgono le premesse.
+
+Parte Sintattica
+- "Assiomi": sono proposizioni date come punto di partenza in un sistema formale (non si discutono, si accettano).
+- "teoremi": sono le proposizioni che possiamo dedurre dagli assiomi con **regole di inferenza**.
+- Questa è la parte sintattica: si basa su regole formali, non sul significato delle proposizioni.
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
 
 ### Regole di inferenza
-sono criteri di manipolazione sintattica, ovvero regole che derivano fbf da altre fbf
+
+**Teoria assiomatica**: 
+- formule ben formate ritenute vere: assiomi
+- **criteri di manipolazione sintattica**: regole di inferenza derivano fbf da fbf
+- Scopo: produrre nuove formule sintatticamente corrette (teoremi).
+
+
+
 - voglio dimenticarmi di che cosa significano i simboli (semantica), voglio solo delle regole con cui posso arrivare ad un risultato vero/falso 
 - esempio dell'aritmentica delle elementari (3+3 lo sostituisco con 6 e non mi preoccupo più di tanto)
 
@@ -190,24 +241,63 @@ sono criteri di manipolazione sintattica, ovvero regole che derivano fbf da altr
     - anche questo non sempre corretto
 
 
-**Teoria assiomatica**: insieme di fbf assiomatice e insieme di regole di sostituzione
+**Derivabilità**
+Una fbf F è derivabile in una teoria T (T |- F) se esiste una sequenza di fbf f1, f2, ..., fn, tale che
+- fn = F e
+- per ogni i, o fi è un assioma di T, oppure è ricavabile dalle fbf precedenti mediante una regola di inferenza di T.
+
 
 **Decidibilità**
-...
+Teoria decidibile: teoria per la quale esiste un metodo meccanico per stabilire se una qualunque fbf è un teorema o non lo è (in un numero di passaggi finito).
+- Il calcolo dei predicati del primo ordine non è decidibile, ma semidecidibile: se una formula è un teorema, esiste un metodo meccanico che la deriva in un numero finito di passi. Se invece la formula non è un teorema, non è garantita, in generale, la terminazione del metodo meccanico 
+
+
 
 **Correttezza e completezza**
+Una teoria assiomatica è corretta se i teoremi dimostrati seguono logicamente dagli assiomi della teoria.
+
+Una teoria assiomatica è completa se tutte le fbf che seguono logicamente dalla teoria possono essere dimostrati come teoremi della teoria.
+
+Se T è **corretta e completa** è garantita l’equivalenza tra l'aspetto sintattico e semantico
+- T |- F <-> T|= F
+
 - correttezza (soundness): la derivazione produce solo sentenze che sono conseguenza logica.
     - abduzione non è corretta
-- completezza (completeness): la derivazione puo’ prdurre tutte le conseguenze logiche
-    - le regole di inferenza non sono complete (decidibilità)
+- completezza (completeness): la derivazione puo’ produrre tutte le conseguenze logiche
+    - Le regole di inferenza sono complete; tuttavia, **il problema della derivabilità è indecidibile**:
+        - non esiste un algoritmo generale che applica le regole di inferenza che si ferma sempre
+
+Ancora in altri termini:
+- correttezza: ogni formula derivata è una conseguenza logica
+- completezza: ogni conseguenza logica può essere derivata
+
+**Conclusione**: se la teoria è corretta e completa: allora possiamo lavorare solo sul piano sintattico (**CHIEDI A CHESANI**)
+
 
 
 
 **Monotonicità**
+Una teoria T è monotona se aggiungendo degli assiomi, quest'ultimi non mi invalidano i teoremi che ho gia ottenuto precedentemente
+- Sia Th(T) l'insieme dei teoremi derivabili da T. Allora T è monotona se Th(T) sottoinsieme Th(T U H) per qualunque insieme aggiuntivo di assiomi H.
 
-se aggiungo degli assiomi, quest'ultimi non mi invalidano i teoremi che ho gia ottenuto con solo gli assiomi precedenti
+**Esistono regole di inferenza non monotone.** Ad esempio la regola nota come Assunzione di Mondo Chiuso (Closed World Assumption, CWA):
+
+se una formula atomica ground A non è conseguenza logica di una teoria T, ~A si può considerare un teorema di T.
+- Se alla teoria T si aggiunge l'assioma A, non si può più derivare ~A, da cui segue la non monotonicità del sistema di inferenza.
 
 Assunzione del mondo chiuso:
 "ragionamenti per DB", se non c'è nel DB allora è falso
 - il DB è il mio mondo
 
+
+
+
+### Sommario
+- Gli agenti logici applicano inferenze a una base di conoscenza per **derivare nuove informazioni** (se non facciamo induzioni/abduzioni come facciamo a derivare nuove informazioni?).
+- Concetti base della logica come linguaggio per la rappresentazione della conoscenza e ragionamento:
+    - sintassi: struttura formale delle sentenze
+    - semantica: verita` di sentenze rispetto ad interpretazioni/modelli
+- conseguenza logica (entailment): sentenza necessariamente vera data un’altra sentenza
+- inferenza: derivare (sintatticamente) sentenze da altre sentenze
+    - correttezza (soundness): la derivazione produce solo sentenze che sono conseguenza logica.
+    - completezza (completeness): la derivazione puo’ prdurre tutte le conseguenze logiche.
