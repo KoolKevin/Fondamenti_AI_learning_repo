@@ -100,7 +100,7 @@ Date queste definizioni principali possiamo definire:
     - in sostanza tutto cio che si riduce ad un elemento del dominio
     - una variabile è un termine;
     - una costante è un termine;
-    - se f è un simbolo di funzione n-aria e t1,...tn sono termini, allora f(t1,...,tn) è un termine.
+    - se f è un simbolo di funzione n-aria e t1,...tn sono termini, allora f(t1,...,tn) è un termine (composto).
 
 - **Atomo** o formula atomica:
     - un predicato con dentro dei termini
@@ -183,6 +183,8 @@ I **sistemi di refutazione** si basano su questa proprietà:
 
 ```per dimostrare S |= F, supposto S soddisfacibile, è sufficiente dimostrare che S U {~F} è insoddisfacibile.```
 
+In pratica l'idea è voler dimostrare che F è conseguenza logica, mostrando che aggiungendo all'insieme di partenza ~F il mio nuovo insieme diventa insoddisfacibile (se è vero ~F è falso il resto e viceversa)
+
 Problema interessante:
 Determinare se una formula F segue logicamente da S (ovvero che S È {~F} è insoddisfacibile) **utilizzando solo semplici trasformazioni sintattiche** (regole di inferenza), possibilmente ripetitive e quindi automatizzabili, e non introducendo concetti quali significato o interpretazione o modello.
 
@@ -242,9 +244,13 @@ Parte Sintattica
 
 
 **Derivabilità**
+- **Dimostrazione**: sequenza finita di fbf f1, f2, ..., fn, tale che ciascuna fi o è un assioma oppure è ricavabile dalle fbf precedenti **mediante una regola di inferenza**.
+- **Teorema**: L'ultima fbf di ogni dimostrazione.
+- **Prova del teorema**: sequenza di regole di inferenza applicate
+
 Una fbf F è derivabile in una teoria T (T |- F) se esiste una sequenza di fbf f1, f2, ..., fn, tale che
-- fn = F e
-- per ogni i, o fi è un assioma di T, oppure è ricavabile dalle fbf precedenti mediante una regola di inferenza di T.
+- fn = F (teorema) e
+- per ogni i, o fi è un assioma di T, oppure è ricavabile dalle fbf precedenti mediante una regola di inferenza di T (dimostrazione).
 
 
 **Decidibilità**

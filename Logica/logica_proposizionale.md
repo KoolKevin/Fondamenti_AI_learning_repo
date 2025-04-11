@@ -23,7 +23,7 @@ Una clausola è una **disgiunzione di letterali** (cioè atomi negati e non nega
 in logica proposizionale le clausole non hanno variabili (non sono ammesse)
 
 ![alt text](immagini/principio_di_risoluzione.png)
-- in sostanza, si semplificano gli atomi opposti in due clausole per produrre una terza clausola che è l'unione delle prime due
+- in sostanza, si semplificano gli atomi opposti in due clausole per produrre una terza clausola (**risolvente**) che è l'unione delle prime due
 - **NB**: la conseguenza logica si applica in una direzione, tutte i modelli della mia teoria sono modelli anche per la mia fbf, non vale che un modello per la fbf è anche un modello per la teoria
 - faremo esercizi su sta roba
 
