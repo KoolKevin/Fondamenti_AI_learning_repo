@@ -31,6 +31,7 @@ in logica proposizionale le clausole non hanno variabili (non sono ammesse)
 ricorda: se voglio dimostrare un teorema F partendo da degli assiomi H, derivando da H U {~F} la contraddizione logica, si dimostra che F è un teorema della teoria (assurdo).
 - in questo caso, la regola di inferenza con cui deriviamo è la risoluzione!
 - se genere la clausola vuota dimostro la contraddizione
+    - arrivo a risolvere A con ~A 
 
 ### algoritmo di robinson
 

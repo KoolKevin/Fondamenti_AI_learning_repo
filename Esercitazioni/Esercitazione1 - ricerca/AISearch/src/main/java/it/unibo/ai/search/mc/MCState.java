@@ -46,16 +46,12 @@ public class MCState
 	
 	// total number of Missionars at the beginning of the game
 	private final int totMissionars;
-	
 	// number of Missionars at the starting shore
 	private int missionars;
-	
    // total number of Cannibals at the beginning of the game
 	private final int totCannibals;
-	
 	// number of Cannibals at the starting shore
 	private int cannibals;
-	
 	/*
 	 * true means that it is on this shore, false means that is on the other shore
 	 */

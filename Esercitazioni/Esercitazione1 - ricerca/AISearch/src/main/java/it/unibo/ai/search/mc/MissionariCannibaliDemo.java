@@ -17,7 +17,10 @@ import java.util.Properties;
 import aima.core.agent.Action;
 
 import aima.core.search.framework.SearchAgent;
+import aima.core.search.framework.evalfunc.HeuristicFunction;
+import aima.core.search.framework.problem.GoalTest;
 import aima.core.search.framework.problem.Problem;
+import aima.core.search.framework.problem.StepCostFunction;
 import aima.core.search.framework.qsearch.GraphSearch;
 import aima.core.search.framework.qsearch.TreeSearch;
 import aima.core.search.uninformed.BreadthFirstSearch;
@@ -35,11 +38,37 @@ public class MissionariCannibaliDemo {
  
 	
 	public static void main(String[] args) {
+		/*
+		 * MCState implementa tutte queste interfacce:
+		 * 	- GoalTest,
+		 * 	- StepCostFunction,
+		 *	- HeuristicFunction
+		 */
 		MCState initState = new MCState();
 
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 			
+			/**
+			 * Constructs a problem with the specified components, which includes a step
+			 * cost function.
+			 * 
+			 * @param initialState:
+			 *            the initial state of the agent.
+			 * @param actionsFunction:
+			 *            a description of the possible actions available to the agent.
+			 * @param resultFunction:
+			 *            a description of what each action does; the formal name for
+			 *            this is the transition model, specified by a function
+			 *            RESULT(s, a) that returns the state that results from doing
+			 *            action a in state s.
+			 * @param goalTest:
+			 *            test determines whether a given state is a goal state.
+			 * @param stepCostFunction:
+			 *            a path cost function that assigns a numeric cost to each path.
+			 *            The problem-solving-agent chooses a cost function that
+			 *            reflects its own performance measure.
+			 */
 			Problem problem = new Problem(initState,
 					new MCActionsFunction(),
 					new MCResultFunction(),
@@ -92,7 +121,7 @@ public class MissionariCannibaliDemo {
 				System.out.println("\nPress enter to execute Depth Limited Search...");
 				br.readLine();
 				System.out.println("\nDepth Limited:");
-				DepthLimitedSearch search = new DepthLimitedSearch(9);
+				DepthLimitedSearch search = new DepthLimitedSearch(11);
 				agent = new SearchAgent(problem, search);
 				printActions(agent.getActions());
 				printInstrumentation(agent.getInstrumentation());

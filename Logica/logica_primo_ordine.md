@@ -95,7 +95,7 @@ Data un'espressione E
 ## Il principio di risoluzione per le clausole generali
 ...
 
-in sostanza uguale a prima
+in sostanza uguale a prima ma dobbiamo applicare l'unificazione
 - ricorda di applicare la sostituzione anche alla risolvente
 
 
@@ -135,16 +135,52 @@ le strategie complete sono costose
 - **linear input**: 
     - simile a lineare ma sceglie sempre una clasuola a partire dall'insieme base
     - utilizzata da prolog
+    
+**non completa**! corro il rischio di non riuscire a dimostrare qualcosa anche se quel qualcosa era conseguenza logica
 
-corro il rischio di non riuscire a dimostrare qualcosa anche se quel qualcosa era conseguenza logica
-
-
-
-
-
-
-
+ma se mi riduco ad un sottoinsieme di clausole la linear input però diventa completa!
+- clausole di Horn
+- che prezzo pago però? 
+- cosa non riesco ad esprimere con le clausole di Horn?
 
 
 
-## Clausole di Horn
+
+
+## Clausole di Horn (o definite)
+...
+
+nella vita reale le clausole di Horn non escludono formule logiche che sono interessanti
+- il prezzo non è troppo alto!
+
+...
+
+Applichiamo risulozione con linear input
+
+...
+
+Due casi particolari di risoluzione:
+
+**Formard Chaining**
+- bottom-up 
+- parto dai fatti ed arrivo al goal
+
+**Backward Chaining**
+- top-down
+- parto dal goal ed arrivo ai fatti
+
+
+
+
+
+
+Esempio:
+...
+
+studente di ingegneria non è sufficiente a dire che uno studia ad ingegneria bisogna rappresentare entrambe le cose
+
+negli esercizi è bene mettere le clausole a cui ho applicato la risoluzione all'inizio (c9 = c5+c8)
+
+
+or esclusivo difficile
+- conviene rappresentarlo come congiunzione di disgiunzioni (forma a clausole)
