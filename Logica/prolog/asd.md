@@ -45,3 +45,47 @@ possono esistere più soluzioni (anche infinite)
 
 La strategia di ricerca di prolog **non è completa**
 - d'altronde uso DFS e posso quindi andare in loop
+
+...
+
+
+Prolog deve decidere una clausola tra quelle con cui può unificare 
+- la scelta è quella dell'ordine con cui vengono scritte (ordine sintattico)
+    - le soluzioni non cambiano (SLD corretto e completo) ma cambiamo l'ordine di esplorazione e magari evitiamo loop
+- punto di scelta 
+
+... incompletezza implementativa dovuta ai loop di DFS
+
+curiosità della notazione:
+- in prolog l'and è rappresentato con ,
+- l'or con ;
+    - utilizzato anche per chiedere altre risposte
+
+
+
+
+
+
+
+
+## Interpretazione procedurale (molto importante)
+interpretazione informale che aiuta a prendere familiarità con la programmazione logica in Prolog
+
+...
+
+uno degli argomenti del mio predicato è destinato a svolgere il ruolo di variabile di ritorno
+
+ma abbiamo anche reversibilità quindi questo parametro di uscita può cambiare
+
+
+in prolog la firma di un predicato è dettata da nome e arità del predicato
+- non esiste il tipo degli argomenti
+
+
+
+
+
+
+
+### Predicati builtin extra-logici
+causano side effects
