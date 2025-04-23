@@ -69,13 +69,43 @@ Data un'espressione E
 • Renaming: sostituzioni che cambiano semplicemente il nome ad alcune delle variabili di E, [E]s è una variante di E.
 
 **Sostituzione unificatrice**:
-- L’unificazione rende identici due o più atomi (o termini) (o meglio le loro istanze) attraverso un’opportuna sostituzione.
-- Se si considerano solo due atomi (o termini), uno dei quali senza alcuna variabile, si ricade in un caso particolare di unificazione, detto pattern-matching. 
-- Un insieme di atomi (o termini) A1, A2 ,..., An è unificabile se esiste una sostituzione s tale che: [A1]s = [A2]s = .... = [An]s. 
-- La sostituzione s è detta sostituzione unificatrice (o unificatore)
+L’unificazione **rende identici due o più atomi** (o termini) (o meglio le loro istanze) attraverso un’opportuna sostituzione. 
+- Un **insieme** di atomi (o termini) A1, A2 ,..., An è unificabile se esiste una sostituzione s tale che:
+    - [A1]s = [A2]s = .... = [An]s. 
+    - La sostituzione s è detta **sostituzione unificatrice** (o unificatore)
 
-**NB**: ogni volta che faccio una sostituzione più specifica perdo un po' di informazione (generalità). **Voglio unificare preservando la massima generalità possibile**. In altre parole, voglio trovare la **MGU** (Most General Unifier)
-- Sotto-NB: se trovo la MGU, potrei non riuscire a trovare la contraddizione, perchè perdo dell'informazione che magari mi serve dopo
+Se si considerano solo due atomi (o termini), uno dei quali senza alcuna variabile, si ricade in un caso particolare di unificazione, detto pattern-matching.
+- l'unificazione può quindi essere considerata il caso generale del pattern matching
+    - solo due termini, di cui uno è già definito
+    - posso trasformare il termine non ground nella costante?
+    - detta in un altro modo, la costante rispetta le regole del pattern?
+
+
+
+**parentesi algoritmo di unificazione | caso costante vs termine composto**
+Tu stai dicendo: "Non posso scegliere una X = c in modo che f(c) = a?"
+
+Questo però non è valido in logica del primo ordine, perché:
+- a e f(X) hanno natura diversa:
+- a è un simbolo costante, tipo "rosso", "3", "marte"...
+- f(X) è un termine composto, costruito applicando una funzione/simbolo di funtore (f) a un argomento.
+
+Non esiste alcuna sostituzione che possa rendere f(X) identico a a, perché non c'è modo di smontare o trasformare a in f(c) – i simboli sono presi come "opachi", non si possono espandere o riscrivere.
+
+🔍 Un'analogia:
+Immagina che a sia una mela, e f(X) sia una "scatola con dentro qualcosa". Non puoi mai dire che una mela è uguale a una scatola contenente qualcosa, indipendentemente da cosa ci metti dentro la scatola.
+
+
+
+
+
+
+
+
+### Most General Unifier
+ogni volta che faccio una sostituzione più specifica perdo un po' di informazione (generalità). **Voglio unificare preservando la massima generalità possibile**. In altre parole, voglio trovare la **MGU** (Most General Unifier)
+- completa generata al passo precedetente , la seconda clausola può essere uana qualunque 
+- NB: se non trovo la MGU, potrei non riuscire a trovare la contraddizione, perchè perdo dell'informazione che magari mi serve dopo
 
 
 
@@ -92,25 +122,43 @@ Data un'espressione E
 
 
 
-## Il principio di risoluzione per le clausole generali
-...
+## Il principio di Risoluzione per le clausole generali
+Siano C1 e C2 due clausole del tipo:
+- C1 = A1 v ... v An, C2 = B1 v ... v Bm
+- dove Ai (i=1..n) e Bj (j=1..m) sono atomi positivi o negativi (letterali) in cui possono comparire variabili.
+
+Se esistono due letterali Ai e Bj tali che [Ai]s = [~Bj]s , dove s è la MGU, allora si può derivare una nuova
+clausola C3 (il risolvente):
+- [A1 v ... v Ai-1 v Ai+1 v ... v An v B1 ... Bj-1 v Bj+1 v ... v Bm]s
+- Date due clausole C1 e C2, il loro **risolvente C3 è conseguenza logica di C1 U C2**
+    - di conseguenza può essere aggiunto alla teoria
+    - **NB**: la sostituzione unificatrice va applicata anche a C3
 
 in sostanza uguale a prima ma dobbiamo applicare l'unificazione
-- ricorda di applicare la sostituzione anche alla risolvente
+- ricorda di applicare la sostituzione anche al risolvente
 
 
 
+### Correttezza e completezza della risoluzione
+Si può dimostrare che sotto opportune strategie di scelta delle clausole da risolvere, la risoluzione è corretta e completa.
 
-**Regola di inferenza**
-[mettici l'immagine]
+**Teorema**: Un insieme di clausole è insoddisfacibile se e solo se l'algoritmo di risoluzione termina con successo in un numero finito di passi, generando la clausola vuota.
+- insomma possiamo fare affidamente  la risoluzione 
+
+
 
 
 
 ### Strategie per la scelta dei risolventi
-quanti e quali risolventi scelgo se ve ne sono possibili molteplici?
+**OSS:** Il metodo di risoluzione procede esaustivamente generando tutti i possibili risolventi ad ogni passo.
+- **esplosione combinatoria**: devo considerare ad ogni iterazione tutte le combinazioni di due clausole su cui posso applicare la risoluzione
+
+Per motivi di efficienza è opportuno adottare delle **strategie**!
+- quanti e quali risolventi scelgo se ve ne sono possibili molteplici?
 - io voglio scegliere quello che mi fa arrivare prima alla contraddizione
 
-inoltre se le clausole sono molteplici, ho il problema anche di scegliere quali coppie di clausole risolvere?
+
+
 
 **esempio con Socrate**:
 nota: ricordiamo che dimostrato il teorema, a questo punto ce ne possiamo fregare di che cosa significano uomo() e mortale()! Siamo sicuri che qualunque interpretazione che è un modello per gli assiomi mi rende valido anche il teorema
@@ -120,9 +168,9 @@ Robinson diceva di esaminare tutte le coppie, grazie...
 - l'essere umano fa ad occhio! ma una macchina?
 
 **Esistono delle stratgie!**
-- **strategia lineare**: risolvo considerando sempre l'ultima clausola 
+- **strategia lineare (completa)**: risolvo considerando sempre l'ultima clausola generata al passo precedente, la seconda clausola può essere una qualunque 
     - esempio del cane e gatto
-    - una sorta di DFS
+    - **una sorta di DFS**
     - spesso conviene 
     - **completa**
 
