@@ -177,16 +177,21 @@ Robinson diceva di esaminare tutte le coppie, grazie...
 Robinson correttezza e completezza ...
 
 
-### Strategie non complete
-le strategie complete sono costose
 
-- **linear input**: 
-    - simile a lineare ma sceglie sempre una clasuola a partire dall'insieme base
-    - utilizzata da prolog
-    
+
+
+
+### Strategie non complete
+le strategie complete sono costose. Sia in termini computazionali che di memoria (devo mantenere tutte le clausole generate nei passi precedenti)
+
+**linear input**: 
+- simile a lineare ma la clausola "libera"  viene sempre scelta tra quelle dell'insieme base
+- utilizzata da prolog
+
+**vantaggio**: memorizzo solo l'ultimo risolvente (e le clausole di base)    
 **non completa**! corro il rischio di non riuscire a dimostrare qualcosa anche se quel qualcosa era conseguenza logica
 
-ma se mi riduco ad un sottoinsieme di clausole la linear input però diventa completa!
+**NB**: ma se mi riduco ad un sottoinsieme di clausole la linear input però diventa completa!
 - clausole di Horn
 - che prezzo pago però? 
 - cosa non riesco ad esprimere con le clausole di Horn?
@@ -196,16 +201,42 @@ ma se mi riduco ad un sottoinsieme di clausole la linear input però diventa com
 
 
 ## Clausole di Horn (o definite)
-...
+La logica a clausole di Horn è un sottoinsieme della logica a clausole
+```Le clausole di Horn hanno al più un letterale positivo```
 
 nella vita reale le clausole di Horn non escludono formule logiche che sono interessanti
 - il prezzo non è troppo alto!
 
-...
+Risoluzione per le clausole di Horn:
+- risoluzione SLD resolution with:
+    - Selection rule: Si sceglie solo un atomo alla volta da risolvere
+        - In un goal come:  ?- padre(X, Y), madre(Y, Z).
+        - ci sono due atomi da soddisfare: padre(X, Y) e madre(Y, Z)
+        - "Risolvere un atomo alla volta" significa che:
+            - si sceglie il primo atomo da risolvere (padre(X, Y)),
+            - si cerca una clausola nella base di conoscenza che può farci derivare padre(X, Y) (cioè un fatto o una regola con una testa unificabile),
+            - si applica l’unificazione, si sostituiscono le variabili, e si genera un nuovo goal con l’atomo risolto eliminato (o sostituito con il corpo della regola, se era una regola).
+            - Solo dopo si passa al prossimo atomo, aggiornando le variabili con le sostituzioni ottenute finora. 
+    - Linear input strategy
+    - for Definite clauses: clausole di Horn
+- Risoluzione SLD opera per contraddizione e quindi si procede negando la formula F da dimostrare.
+- Poiché F è una congiunzione di formule atomiche quantificate esistenzialmente, la sua negazione produrrà una disgiunzione di formule atomiche negate quantificata universalmente, cioè una **clausola di Horn goal**.
 
-Applichiamo risulozione con linear input
 
-...
+
+In this paper, we shall avoid the awkwardness of the clausal definition of subset by concentrating attention on clauses which contain **at the most one conclusion**. Such clauses, called Horn clauses, can be further classified into four kinds:
+- **assertions**:               B <-
+- **procedure declarations**:   B <- A1, ..., An
+- **denials**:                    <- A1, ..., An
+- **and contradiction**:          <-
+
+
+
+
+
+
+
+
 
 Due casi particolari di risoluzione:
 
