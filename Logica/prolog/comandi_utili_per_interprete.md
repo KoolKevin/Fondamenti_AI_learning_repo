@@ -1,0 +1,12 @@
+- When the prolog interpreter is executed, it assumes a “working directory”: it will look for files only in the current working directory.
+    - To discover the current working dir: “pwd.”
+    - **To change working dir**: “working_directory(Old, New).”
+        - imposta la directory di lavoro corrente a New
+        - restituisce nella variabile Old la directory corrente prima del cambio 
+            - utile se si vuole tornare indietro: working_directory(_, Old)
+            
+- Programs must be loaded, through the pre-processing of source files
+    - Given a file “test.pl”, it can be **loaded** through “consult(test).”
+- When a program source is modified, it needs to be reloaded into the database clause
+    - Command “make.” **reloads all the changed files** 
+    - It is always a good practice to close the interpreter, and run it again, from time to time…
