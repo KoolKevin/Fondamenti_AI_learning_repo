@@ -113,5 +113,5 @@ Se la ricorsione è poi in coda, quest'ultima si può anche ottimizzare.
     - se viene scelta la clausola (b), non è più necessario mantenere alcuna informazione contenuta nel record di attivazione di p(Z) e la rimozione di tale record di attivazione può essere effettuata (TRO)
         - Più in generale questa ottimizzazione vale sempre quando si considera l'ultima clausola della procedura
 
-
-
+**NB**: nella ricorsione dobbiamo distinguere il caso base dal caso ricorsivo ed eseguire questi in **mutua esclusione**. Gli operatori relazionali permettono di fare questa cosa. 
+- Vedi N>1 nell'esercizio di specialPrint.
