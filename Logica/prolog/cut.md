@@ -17,3 +17,18 @@ l'efficienza di altre classi di programmi.
 
 
 ### cut per imporre la mutua esclusione
+...
+
+anche l'unificazione mi offre già un meccanismo di mutua esclusione
+- posso forzare la non unificazione (\=)
+- tuttavia, è una mutua esclusioen meno generale rispetto al cut
+
+
+
+...
+
+
+
+predicati builtin per la verifica del tipo di un termine
+
+
