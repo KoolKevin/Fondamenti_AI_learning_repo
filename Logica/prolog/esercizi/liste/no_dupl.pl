@@ -10,10 +10,10 @@
 
 no_dupl([], []).
 
-no_dupl([T | C], Ris) :-
-    member(T, C),
-    no_dupl(C, Ris).
-    
+%%% importante mettere prima il caso in cui la testa non è duplicata %%%
+%%% in modo da ottenere invertibilità (altrimenti stack overflow) %%%
+%%% o almeno così potrei pensare, ma a quanto pare non è vero %%%
+
 % no_dupl([T | C], Ris) :-
 %     \+ member(T, C),
 %     append([T], Ris1, Ris), % questo mi produce Ris = [T|Ris1] e poi mi risolve Ris1 sotto 
@@ -21,9 +21,14 @@ no_dupl([T | C], Ris) :-
 
 % oppure senza append
 no_dupl([T | C], [T | Ris]) :-
-    \+ member(T, C),
+    not(member(T, C)),
     no_dupl(C, Ris).
 
+
+no_dupl([T | C], Ris) :-
+    member(T, C),
+    no_dupl(C, Ris).
+    
 
 
 

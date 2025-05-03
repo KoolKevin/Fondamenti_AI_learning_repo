@@ -11,6 +11,8 @@ E’ il più noto linguaggio di Programmazione Logica
 - non c'è l'iterazione, **solo ricorsione**
 
 ### Programmi prolog
+(ricorda che A->B === ~A v B)
+
 Un programma Prolog (puro) è un **insieme di clausole di Horn** che rappresentano:
 - **FATTI** riguardanti gli oggetti in esame e le relazioni che intercorrono
     - implicazioni senza antecedente
