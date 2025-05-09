@@ -5,8 +5,9 @@ import aima.core.agent.Action;
 import aima.core.search.framework.evalfunc.HeuristicFunction;
 import aima.core.search.framework.problem.GoalTest;
 import aima.core.search.framework.problem.StepCostFunction;
+import it.unibo.ai.didattica.competition.tablut.client.IterativeDeepeningAlphaBetaSearch;
 
-
+import aima.core.search.adversarial.*;
 
 
 public class MCState 
@@ -29,7 +30,10 @@ public class MCState
 	public static Action C = new DynamicAction("C");
 	*/
 	
-	
+//	IterativeDeepeningAlphaBetaSearch s;
+//	Game g;
+//	AlphaBetaSearch c;
+//	MinimaxSearch m;
 	
 	
 /*****************************************************************************
