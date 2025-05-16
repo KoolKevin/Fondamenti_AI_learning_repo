@@ -37,6 +37,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/kevin/Scrivania/Git_learning_repos/Fondamenti_AI_learning_repo/Esercitazioni/Esercitazione1 - ricerca/aima-core-3.0.0.jar"/>
+	<classpathentry kind="lib" path="/home/kevin/Scrivania/Git_learning_repos/Fondamenti_AI_learning_repo/Esercitazioni/Esercitazione1 - ricerca/aima-core-3.0.0.jar" sourcepath="/home/kevin/Scrivania/Git_learning_repos/Fondamenti_AI_learning_repo/Esercitazioni/Esercitazione1 - ricerca/aima-core-3.0.0.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
