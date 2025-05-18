@@ -86,7 +86,7 @@ def generate_maze(screen, start, end):
                 grid[row + dRow // 2][col + dCol // 2] = TipoCasella.PASSAGGIO 
                 stack.append((nRow, nCol)) # per dfs
                 # stack.insert(0, (nRow, nCol)) # per bfs (non è che generi un buon labirinto)
-                time.sleep(0.01) # per la visualizzazione
+                # time.sleep(0.01) # per la visualizzazione
                 draw_grid(screen, grid)
                 break
         # in python un for può avere un else che viene eseguito 
@@ -103,6 +103,19 @@ def generate_maze(screen, start, end):
 
 
 
+
+
+
+
+
+
+
+def bfs(screen, grid, start, end):
+    return general_search(screen, grid, start, end, lambda frontiera, nodiFuturi: frontiera+nodiFuturi) 
+
+def dfs(screen, grid, start, end):
+    return general_search(screen, grid, start, end, lambda frontiera, nodiFuturi: nodiFuturi+frontiera) 
+
 def expand(grid, nodo):
     possibiliNodiFuturi = []
     # per un problema generale dovrei implementare una SuccessorFn(stato)
@@ -112,10 +125,9 @@ def expand(grid, nodo):
     # per questo problema posso limitarmi a controllare tutte le direzioni
     for dRow, dCol in Directions:
             # divide per due il passo dato che in Directions è largo 2
-            nRow, nCol = nodo.state.rowPosition + dRow/2, nodo.state.colPosition + dCol/2 
+            nRow, nCol = nodo.state.rowPosition + dRow//2, nodo.state.colPosition + dCol//2 
             # se la casella trovata è un passaggio o il goal allora è una nuova posizione valida
-            if grid[nRow][nCol] == TipoCasella.PASSAGGIO or grid[nRow][nCol] == TipoCasella.END:
-                grid[nRow][nCol] = TipoCasella.ESPLORATO
+            if grid[nRow][nCol] == TipoCasella.PASSAGGIO or grid[nRow][nCol] == TipoCasella.END: 
                 nodoFuturo = SearchNode(
                     state=SearchState(nRow, nCol),
                     parent=nodo,
@@ -128,7 +140,7 @@ def expand(grid, nodo):
     return possibiliNodiFuturi
 
 
-def general_search(grid, start, end):
+def general_search(screen, grid, start, end, queueing_function):
     frontiera = []
     initialState = SearchState(start[0], start[1]) 
     initialNode = SearchNode(
@@ -140,15 +152,46 @@ def general_search(grid, start, end):
     )
     frontiera.append(initialNode)
 
-    while not frontiera:
+    while frontiera:
         nodo = frontiera.pop(0)
-        # terminal test
-        if nodo.state.rowPosition == end[0] and nodo.state.colPosition == end[1]:
+        row = nodo.state.rowPosition
+        col = nodo.state.colPosition
+        # marchio come caselle esplorate tutte quelle che ho espanso tranne start ed end
+        if (row != start[0] or col != start[1]) and (row != end[0] or col != end[1]): 
+            grid[row][col] = TipoCasella.ESPLORATO
+            draw_grid(screen, grid)
+            time.sleep(0.02)
+        # goal test
+        if row == end[0] and col == end[1]:
             return nodo
-        nodiEspasi = expand(nodo)
-        frontiera.extend(nodiEspasi)
+        nodiFuturi = expand(grid, nodo)
+        frontiera = queueing_function(frontiera, nodiFuturi)
 
     return None
+
+def show_path_to_goal(screen, grid, goalNode): 
+        # calcolo il percorso
+        percorso = []
+        current = goalNode
+        while current is not None:
+            percorso.append(current)
+            current = current.parent
+        percorso.reverse()  
+
+        # disegno il percorso
+        for p in percorso:
+            row = p.state.rowPosition
+            col = p.state.colPosition
+            grid[row][col] = TipoCasella.PERCORSO
+            draw_grid(screen, grid)
+            time.sleep(0.02) 
+
+
+
+
+
+
+
 
 
 
@@ -183,6 +226,9 @@ def main():
     end = (GRID_SIZE - 2, GRID_SIZE - 2) # (devo considerare anche un muro finale)
     grid = generate_maze(screen, start, end)
     
+    goalNode = dfs(screen, grid, start, end)
+    show_path_to_goal(screen, grid, goalNode)
+
     running = True
     while running:
         # screen.fill(WHITE)
