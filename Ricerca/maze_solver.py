@@ -12,8 +12,8 @@ from enum import Enum
 # - l'algoritmo di generazione dei labirinti fa passi 
 #   di due blocchi alla volta (in quanto in mezzo ad 
 #   ogni strada voglio che ci sia un muro)
-GRID_SIZE = 31
-CELL_SIZE = 30
+GRID_SIZE = 51
+CELL_SIZE = 15
 # Costanti per la finestra e la griglia
 DIM_WINDOW = GRID_SIZE*CELL_SIZE
 WIDTH, HEIGHT = DIM_WINDOW, DIM_WINDOW 
