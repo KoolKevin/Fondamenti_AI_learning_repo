@@ -26,4 +26,4 @@ Abbiamo dei constraint hard e dei constraint soft
 ci si può ritirare mandando una mail
 
 
-ricorda di specificare nella mail di verbalizzazione il fatto di avere fatto tablut per prendere il punto
+ricorda di specificare nella mail di verbalizzazione dell'esame il fatto di avere fatto tablut per prendere il punto
