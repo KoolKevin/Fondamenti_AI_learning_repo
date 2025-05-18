@@ -38,8 +38,8 @@ class TipoCasella(Enum):
 
 @dataclass
 class SearchState:
-    posizioneX: int
-    posizioneY: int
+    rowPosition: int
+    colPosition: int
 
 @dataclass
 class SearchNode:
@@ -75,7 +75,7 @@ def generate_maze(screen, start, end):
     stack = [start]
 
     while stack:
-        row, col = stack[-1] # equivale ad una peek
+        row, col = stack[-1] # equivale ad una peek alla cima dello stack
         random.shuffle(Directions)  # Mischia le direzioni per generare percorsi casuali
         for dRow, dCol in Directions:
             nRow, nCol = row + dRow, col + dCol
@@ -103,9 +103,52 @@ def generate_maze(screen, start, end):
 
 
 
+def expand(grid, nodo):
+    possibiliNodiFuturi = []
+    # per un problema generale dovrei implementare una SuccessorFn(stato)
+    # che, dato uno stato, mi restituisce tutte le possibili azioni applicabili
+    # e i relativi stati futuri
+    # 
+    # per questo problema posso limitarmi a controllare tutte le direzioni
+    for dRow, dCol in Directions:
+            # divide per due il passo dato che in Directions è largo 2
+            nRow, nCol = nodo.state.rowPosition + dRow/2, nodo.state.colPosition + dCol/2 
+            # se la casella trovata è un passaggio o il goal allora è una nuova posizione valida
+            if grid[nRow][nCol] == TipoCasella.PASSAGGIO or grid[nRow][nCol] == TipoCasella.END:
+                grid[nRow][nCol] = TipoCasella.ESPLORATO
+                nodoFuturo = SearchNode(
+                    state=SearchState(nRow, nCol),
+                    parent=nodo,
+                    action=(dRow, dCol),
+                    depth=nodo.depth+1,
+                    pathCost=nodo.pathCost+1,
+                )
+                possibiliNodiFuturi.append(nodoFuturo)
 
-# def general_search(grid, start, end):
+    return possibiliNodiFuturi
 
+
+def general_search(grid, start, end):
+    frontiera = []
+    initialState = SearchState(start[0], start[1]) 
+    initialNode = SearchNode(
+        state=initialState,
+        parent=None,
+        action=None,
+        depth=0,
+        pathCost=0,
+    )
+    frontiera.append(initialNode)
+
+    while not frontiera:
+        nodo = frontiera.pop(0)
+        # terminal test
+        if nodo.state.rowPosition == end[0] and nodo.state.colPosition == end[1]:
+            return nodo
+        nodiEspasi = expand(nodo)
+        frontiera.extend(nodiEspasi)
+
+    return None
 
 
 
