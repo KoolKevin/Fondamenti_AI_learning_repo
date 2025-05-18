@@ -1,11 +1,22 @@
 import pygame
 import random
 import time
+from dataclasses import dataclass
+from typing import Optional
+from enum import Enum
 
+
+
+# GRID_SIZE deve essere dispari siccome
+# - il perimetro dello schermo voglio che sia murato 
+# - l'algoritmo di generazione dei labirinti fa passi 
+#   di due blocchi alla volta (in quanto in mezzo ad 
+#   ogni strada voglio che ci sia un muro)
+GRID_SIZE = 31
+CELL_SIZE = 30
 # Costanti per la finestra e la griglia
-WIDTH, HEIGHT = 800, 800
-GRID_SIZE = 21  # Deve essere dispari per un buon labirinto
-CELL_SIZE = WIDTH // GRID_SIZE
+DIM_WINDOW = GRID_SIZE*CELL_SIZE
+WIDTH, HEIGHT = DIM_WINDOW, DIM_WINDOW 
 
 # Colori
 WHITE = (255, 255, 255)
@@ -15,33 +26,68 @@ BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 RED = (255, 0, 0)
 
+
+
+class TipoCasella(Enum):
+    PASSAGGIO = 0
+    MURO = 1
+    ESPLORATO = 2
+    PERCORSO = 3
+    START = 4
+    END = 5
+
+@dataclass
+class SearchState:
+    posizioneX: int
+    posizioneY: int
+
+@dataclass
+class SearchNode:
+    state: SearchState
+    # forward reference tra virgolette in quant SearchNode è una struttura dati ricorsiva
+    parent: Optional['SearchNode']  # parent può essere null per la radice e quindi Optional 
+    action: tuple[int, int]
+    depth: int
+    pathCost: int
+
+
+
+ColoriCasella = {
+    TipoCasella.PASSAGGIO:  WHITE,
+    TipoCasella.MURO:       BLACK,
+    TipoCasella.ESPLORATO:  YELLOW,
+    TipoCasella.PERCORSO:   GREEN,
+    TipoCasella.START:      RED,
+    TipoCasella.END:        GREEN, 
+}
+
 # Direzioni per il movimento nel labirinto (alto, basso, sinistra, destra)
-# due celle alla volta per garantire che tra due celle ci sia sempre un muero
-DIRECTIONS = [(-2, 0), (2, 0), (0, -2), (0, 2)]
+# - due celle alla volta per garantire che in mezzo a due strade ci sia sempre un muro
+Directions = [(-2, 0), (2, 0), (0, -2), (0, 2)]
 
 def generate_maze(screen, start, end):
     # 1 = muro, 0 = passaggio; inizialmente tutto murato, l'algoritmo "scava" i passaggi
-    grid = [[1 for _ in range(GRID_SIZE)] for _ in range(GRID_SIZE)]  
-    # Iniziamo dal punto (1,1)
-    start_x, start_y = 1, 1  
-    grid[start_x][start_y] = 0
-    stack = [(start_x, start_y)]
+    grid = [[TipoCasella.MURO for _ in range(GRID_SIZE)] for _ in range(GRID_SIZE)]  
+    # Iniziamo dal punto (1,1) e non da (0,0) in quanto voglio avere il bordo del labirinto tutto murato
+    startRow, startCol = start  
+    grid[startRow][startCol] = TipoCasella.START
+    
+    stack = [start]
 
     while stack:
-        x, y = stack[-1] # equivale ad una peek
-        random.shuffle(DIRECTIONS)  # Mischia le direzioni per generare percorsi casuali
-        for dx, dy in DIRECTIONS:
-            nx, ny = x + dx, y + dy
-            # print(f"parto da ({x};{y}) e provo a controllare ({nx};{ny})")
+        row, col = stack[-1] # equivale ad una peek
+        random.shuffle(Directions)  # Mischia le direzioni per generare percorsi casuali
+        for dRow, dCol in Directions:
+            nRow, nCol = row + dRow, col + dCol
             # se il punto trovato è un muro appartenente alla griglia lo "scavo"
-            if 1 <= nx < GRID_SIZE and 1 <= ny < GRID_SIZE and grid[nx][ny] == 1:
-                grid[nx][ny] = 0  # Apri il percorso
+            if 1 <= nRow < GRID_SIZE and 1 <= nCol < GRID_SIZE and grid[nRow][nCol] == TipoCasella.MURO:
+                grid[nRow][nCol] = TipoCasella.PASSAGGIO 
                 # scavo la cella intermedia (crea un percorso tra la cella vecchia e quella nuova)
-                grid[x + dx // 2][y + dy // 2] = 0  
-                stack.append((nx, ny)) # per dfs
-                # stack.insert(0, (nx, ny)) # per bfs (non è che generi un buon labirinto)
-                time.sleep(0.02) # per la visualizzazione
-                draw_grid(screen, grid, start, end)
+                grid[row + dRow // 2][col + dCol // 2] = TipoCasella.PASSAGGIO 
+                stack.append((nRow, nCol)) # per dfs
+                # stack.insert(0, (nRow, nCol)) # per bfs (non è che generi un buon labirinto)
+                time.sleep(0.01) # per la visualizzazione
+                draw_grid(screen, grid)
                 break
         # in python un for può avere un else che viene eseguito 
         # quando dentro al ciclo non viene eseguito break
@@ -49,21 +95,40 @@ def generate_maze(screen, start, end):
             # se non ci sono nuove celle valide in nessuna direzione
             # la cella non è più da esplorare
             stack.pop()
+    
+    endRow, endCol = end 
+    grid[endRow][endCol] = TipoCasella.END
+
     return grid
 
-def draw_grid(screen, grid, start, end):
+
+
+
+# def general_search(grid, start, end):
+
+
+
+
+def draw_grid(screen, grid):
     for row in range(GRID_SIZE):
         for col in range(GRID_SIZE):
-            rect = pygame.Rect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE)
-            if grid[row][col] == 1:
-                pygame.draw.rect(screen, BLACK, rect)  # Muro
-            elif (row, col) == start:
-                pygame.draw.rect(screen, GREEN, rect)  # Inizio
-            elif (row, col) == end:
-                pygame.draw.rect(screen, RED, rect)  # Fine
-            else:
-                pygame.draw.rect(screen, WHITE, rect)  # Percorso
-            # pygame.draw.rect(screen, BLUE, rect, 1)  # Griglia
+            # argomenti sono posizione e dimensione
+            rect = pygame.Rect(col*CELL_SIZE, row*CELL_SIZE, CELL_SIZE, CELL_SIZE)
+
+            if grid[row][col] == TipoCasella.PASSAGGIO:
+                pygame.draw.rect(screen, ColoriCasella[TipoCasella.PASSAGGIO], rect)
+            elif grid[row][col] == TipoCasella.MURO:
+                pygame.draw.rect(screen, ColoriCasella[TipoCasella.MURO], rect)
+            elif grid[row][col] == TipoCasella.ESPLORATO:
+                pygame.draw.rect(screen, ColoriCasella[TipoCasella.ESPLORATO], rect)
+            elif grid[row][col] == TipoCasella.PERCORSO:
+                pygame.draw.rect(screen, ColoriCasella[TipoCasella.PERCORSO], rect)
+            elif grid[row][col] == TipoCasella.START:
+                pygame.draw.rect(screen, ColoriCasella[TipoCasella.START], rect)
+            elif grid[row][col] == TipoCasella.END:
+                pygame.draw.rect(screen, ColoriCasella[TipoCasella.END], rect)  
+          
+            pygame.draw.rect(screen, BLUE, rect, 1)  # Griglia
     pygame.display.update()
 
 def main():
@@ -73,13 +138,12 @@ def main():
     
     start = (1, 1)
     end = (GRID_SIZE - 2, GRID_SIZE - 2) # (devo considerare anche un muro finale)
-
     grid = generate_maze(screen, start, end)
     
     running = True
     while running:
         # screen.fill(WHITE)
-        draw_grid(screen, grid, start, end)
+        draw_grid(screen, grid)
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
