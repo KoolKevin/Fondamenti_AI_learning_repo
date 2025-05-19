@@ -4,7 +4,7 @@ import time
 from dataclasses import dataclass
 from typing import Optional
 from enum import Enum
-
+import math
 
 
 # GRID_SIZE deve essere dispari siccome
@@ -103,6 +103,66 @@ def generate_maze(screen, start, end):
 
 
 
+
+
+def find_furthest_passage(grid, start):
+    max_dist = -1
+    furthest = start
+    for r in range(GRID_SIZE):
+        for c in range(GRID_SIZE):
+            if grid[r][c] == TipoCasella.PASSAGGIO:
+                dist = math.hypot(r - start[0], c - start[1])
+                if dist > max_dist:
+                    max_dist = dist
+                    furthest = (r, c)
+    return furthest
+
+
+def generate_maze_prim(screen, start):
+    grid = [[TipoCasella.MURO for _ in range(GRID_SIZE)] for _ in range(GRID_SIZE)]
+    startRow, startCol = start
+    grid[startRow][startCol] = TipoCasella.PASSAGGIO
+
+    # Lista di muri candidati: ogni elemento è (cella_muro, cella_corrisp)
+    walls = []
+
+    def add_walls(r, c):
+        for dRow, dCol in Directions:
+            nr, nc = r + dRow, c + dCol
+            if 1 <= nr < GRID_SIZE - 1 and 1 <= nc < GRID_SIZE - 1:
+                if grid[nr][nc] == TipoCasella.MURO:
+                    walls.append(((nr, nc), (r + dRow // 2, c + dCol // 2)))
+
+    add_walls(startRow, startCol)
+
+    while walls:
+        # Scegli un muro a caso
+        (r, c), (between_r, between_c) = random.choice(walls)
+        walls.remove(((r, c), (between_r, between_c)))
+
+        # Controlla se la cella "dietro il muro" è ancora un muro
+        if grid[r][c] == TipoCasella.MURO:
+            # Conta le celle adiacenti "aperte"
+            count = 0
+            for dRow, dCol in Directions:
+                nr, nc = r + dRow, c + dCol
+                if 0 <= nr < GRID_SIZE and 0 <= nc < GRID_SIZE:
+                    if grid[nr][nc] == TipoCasella.PASSAGGIO:
+                        count += 1
+
+            # Se solo una adiacente è già un passaggio, va bene "aprirla"
+            if count == 1:
+                grid[r][c] = TipoCasella.PASSAGGIO
+                grid[between_r][between_c] = TipoCasella.PASSAGGIO
+                add_walls(r, c)
+                draw_grid(screen, grid)  # facoltativo: visualizzazione animata
+
+    # Imposta inizio e fine
+    grid[startRow][startCol] = TipoCasella.START
+    end = find_furthest_passage(grid, start)
+    grid[end[0]][end[1]] = TipoCasella.END
+
+    return grid, end
 
 
 
@@ -223,8 +283,8 @@ def main():
     pygame.display.set_caption('Labirinto con Pygame')
     
     start = (1, 1)
-    end = (GRID_SIZE - 2, GRID_SIZE - 2) # (devo considerare anche un muro finale)
-    grid = generate_maze(screen, start, end)
+    # end = (GRID_SIZE - 2, GRID_SIZE - 2) # (devo considerare anche un muro finale)
+    grid, end = generate_maze_prim(screen, start)
     
     goalNode = dfs(screen, grid, start, end)
     show_path_to_goal(screen, grid, goalNode)
