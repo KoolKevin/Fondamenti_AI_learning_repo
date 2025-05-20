@@ -12,7 +12,7 @@ import math
 # - l'algoritmo di generazione dei labirinti fa passi 
 #   di due blocchi alla volta (in quanto in mezzo ad 
 #   ogni strada voglio che ci sia un muro)
-GRID_SIZE = 71
+GRID_SIZE = 51
 CELL_SIZE = 10
 # Costanti per la finestra e la griglia
 DIM_WINDOW = GRID_SIZE*CELL_SIZE
@@ -274,7 +274,7 @@ def draw_grid(screen, grid):
             elif grid[row][col] == TipoCasella.END:
                 pygame.draw.rect(screen, ColoriCasella[TipoCasella.END], rect)  
           
-            pygame.draw.rect(screen, BLUE, rect, 1)  # Griglia
+            # pygame.draw.rect(screen, BLUE, rect, 1)  # Griglia
     pygame.display.update()
 
 def main():
