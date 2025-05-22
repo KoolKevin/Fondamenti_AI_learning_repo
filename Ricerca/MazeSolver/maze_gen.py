@@ -48,7 +48,7 @@ def generate_maze(screen, start, end):
 
 
 
-
+### maze con algoritmo di prim ###
 
 def find_furthest_passage(grid, start):
     max_dist = -1

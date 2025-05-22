@@ -7,9 +7,6 @@ from draw import draw_grid
 from maze_tiles import TipoCasella
 from config_constans import TILE_EXPLORATION_SLEEP_TIME, GOAL_REACHING_SLEEP_TIME
 
-
-
-
 @dataclass
 class SearchState:
     rowPosition: int
