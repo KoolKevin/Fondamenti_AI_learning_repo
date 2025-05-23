@@ -29,6 +29,8 @@ Utilizza per la funzione di valutazione la distanza (stimata) di un nodo *n* dal
 Funzione di valutazione f(n) = h(n)
 - h(n) (euristica) = stima del costo da n al goal
 
+nota: in un certo senso simile a DFS in quanto va in profondità scegliendo ad ogni passo l'alternativa che sembra nell'immediato più vicina 
+
 
 ### Ricerca A*
 La ricerca Greedy mostra come sia necessario considerare anche il "costo" nel raggiungere il nodo n dalla radice.
@@ -37,6 +39,14 @@ Funzione di valutazione con due contributi:
 - g(n): profondità del nodo (quanto ho speso fino ad ora)
 - h'(n): distanza di n dal goal
 - Scegliamo come nodo da espandere quello per cui questa somma è più piccola
+
+**NB**: combina i vantaggi di DFS (basso utilizzo di memoria) con quelli della ricerca a costo uniforme (ottimalità della soluzione)
+- DFS: h'(n) mi guida in profondità verso l'obiettivo senza spazzare in ampiezza l'albero 
+    - mi da un contributo che ad ogni decisione di espansione mi spinge ad espandere il nodo che sembra più vicini all'obiettivo
+    - mi dà una **direzionalità**
+- UCS: g(n) = costo del cammino dall'origine al nodo; identica a UCS
+    - mi da un contributo che ad ogni decisione di espansione mi spinge ad espandere il nodo con costo cumulativo (distanza dall'origine) più basso
+    - mi consente di accorgermi se sto esplorando una strada che **sembrava buona ma che si è rivelata più lunga di altre alternative**
 
 **NB**: impara la notazione dell'esempio del filetto con A* (lo mette all'esame)
 - tra parentesi si mette l'ordine di espansione dei nodi

@@ -39,7 +39,9 @@ public class MissionariCannibaliDemo {
 	
 	public static void main(String[] args) {
 //		MinimaxSearch m;
+//		Game g;
 //		IterativeDeepeningAlphaBetaSearch s;
+//		AlphaBetaSearch s2;
 		
 		
 		/*
