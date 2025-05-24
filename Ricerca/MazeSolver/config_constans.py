@@ -3,7 +3,7 @@
 # - l'algoritmo di generazione dei labirinti fa passi 
 #   di due blocchi alla volta (in quanto in mezzo ad 
 #   ogni strada voglio che ci sia un muro)
-GRID_SIZE = 71
+GRID_SIZE = 101
 CELL_SIZE = 10
 
 # Costanti per la finestra e la griglia

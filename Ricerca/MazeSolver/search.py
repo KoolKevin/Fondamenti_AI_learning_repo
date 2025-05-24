@@ -43,10 +43,12 @@ def ucs(screen, grid, start, end):
      
 def a_star(screen, grid, start, end):
     def evalNode(node):
-        # distanza euclidea (euristica ottimistica ammissibile)
-        rowDistance = end[0] - node.state.rowPosition
-        colDistance = end[1] - node.state.colPosition
-        heuristicDistanceFromGoal = math.sqrt(rowDistance*rowDistance + colDistance*colDistance)
+        rowDistance = abs(end[0] - node.state.rowPosition)
+        colDistance = abs(end[1] - node.state.colPosition)
+        # distanza di manahattan (molto meglio)
+        heuristicDistanceFromGoal = rowDistance + colDistance
+        # distanza euclidea (troppo ottimista)
+        # heuristicDistanceFromGoal = math.sqrt(rowDistance*rowDistance + colDistance*colDistance)
         return node.pathCost + heuristicDistanceFromGoal
     
     def sortByEval(frontiera, nodiFuturi):
