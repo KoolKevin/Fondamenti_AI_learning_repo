@@ -180,25 +180,148 @@ L’algoritmo di ricerca può essere:
 
 
 ### Strips
+STRIPS = Stanford Research Institute Problem Solving. Comprende: 
+- Linguaggio per la rappresentazione di azioni con sintassi molto più semplice del Situation Calculus (meno espressività, più efficienza).
+- Algoritmo specifico per la costruzione di piani.
+
+
+**Linguaggio STRIPS**
+- **Rappresentazione dello stato**
+    - Insieme di fluent che valgono nello stato
+    - Esempio: on(b,a), clear(b), clear(c), ontable(c)
+- **Rappresentazione del goal**
+    - Insieme di fluent (simile allo stato) con in aggiunta possibili variabili
+    - Esempio: on(X,a)
+- **Rappresentazione delle azioni** (3 liste di fluenti)
+    - PRECONDIZIONI: fluent che devono essere veri per applicare l’azione
+    - DELETE: fluent che diventano falsi come risultato dell’azione
+    - ADD: fluent che diventano veri come risultato dell’azione
+
+Esempio di azione
+Move(X, Y, Z)
+    Precondizioni: on(X,Y), clear(X), clear(Z)
+    Delete List: clear(Z), on(X,Y)
+    Add list: clear(Y), on(X,Z)
+
+A volte ADD e DELETE list sono rappresentate come un'unica EFFECT list con atomi positivi e negativi
+    Move(X, Y, Z)
+    Precondizioni: on(X,Y), clear(X), clear(Z)
+    Effect List: ¬clear(Z), ¬on(X,Y), clear(Y), on(X,Z)
+
+**NB**: Frame problem risolto con la **Strips Assumption**
+- Tutto ciò che non è specificato nella ADD e DELETE list resta immutato
+- Non devo specificare più tutto quello che non cambia, mi basta definire gli effetti negativi e positivi della mia azione medinate le liste degli add e dei delete
 
 
 
 
-Strips assumption per il frame problem
-- hanno dovuto specificare gli effetti negativi ed effetti positivi
-    - lista degli add e lista dei delete
-    
-In strips vale comunque la CWA
-
-
-punto di non determinismo di STRIPS se ho a,b,c in che ordine rimetto dentro lo stack?
-- regola di selezione
-- problematico se i goal interagiscono
-
-strips fa backtracking
-- abbiamo un punto di scelta
-- strips prova con un ordine e se non riesce fa backtracking
 
 
 
-Anomalia di Sussman
+
+
+### Ricerca in STRIPS | algoritmo
+come al solito una ricerca non informata è impraticabile quando il numero di possibili stati e di regole è elevato. Occorrono delle euristiche per migliorare l’efficienza.
+
+L'algoritmo di STRIPS
+- Utilizza il linguaggio STRIPS precedentemente presentato con **regole precondizione -> azione**
+- Planner lineare basato su **ricerca backward**
+    - dal goal allo stato iniziale
+- Assume che lo stato iniziale sia completamente noto (**CWA**)
+- Utilizza due **strutture dati**:
+    - stack di goal (congiunzioni)
+    - descrizione S dello stato corrente
+        - formato dall'insieme fluent correntemente veri
+
+**Algoritmo**:
+// S rappresenta lo stato corrente formato dall'insieme dei fluent veri in questo momento
+//      ad esempio: {on(A, C), clear(A)}.
+// All'inizio lo stato corrente è lo stato iniziale
+//
+// A Rappresenta una formula, che può essere:
+//      un fluent (come on(A, C))
+//      oppure una congiunzione di fluent: A = a₁ ∧ a₂ ∧ ... ∧ aₙ
+// 
+// Quindi, A è un goal complesso o semplice, che può essere:
+//      già soddisfatto (A ∈ S) oppure
+//      scomposto in sottogoal
+//
+// a:
+//      Rappresenta un fluent; Esempi: at(robot, room1), clean(room2), has(key)
+// È la forma elementare di un obiettivo o di un precondizione/effetto di un’azione. 
+
+
+// l'algoritmo cerca di trovare le azioni che mi fanno raggiungere la
+// congiunzione dei goal finali andando a ritroso
+Inizializza stack con la congiunzione di goal finali
+while (stack non è vuoto) do
+    if top(stack)=A and theta(A) sottoinsieme di S  // si noti che A puo essere un and di goals o un atomo
+        // i fluenti di A appartengono già allo stato corrente e quindi applico solo unificazione
+        pop(A) ed esegui sost. theta sullo stack
+    else if (top(stack) = a)
+        // il fluente a non appartiene allo stato corrente, quindi
+        // aggiungo la regola R che me lo aggiungerà non prima però
+        // di aver eseguito le precondizione di R 
+        // ricorda che le precondizioni sono semplicemente altri fluent
+        // e quindi hanno la stessa forma di a
+        seleziona regola R con a appartenente Addlist(R),
+        pop(a), push(R), push(Precond(R));
+    else if top(stack) = a1, a2, …, an
+        // sto valutando una congiunzione di fluenti. Questa proviene da
+        // una precondizione di una regola. (ADD e DELETE vengono applicate 
+        // direttametne ad S)
+        //
+        // aggiungo i singoli fluenti della congiunzione uno alla volta
+        // in modo che vengano processati dal caso sopra
+        (*) push(a1), …, push(an)
+    else if top(stack) = R
+        // applico la regola aggiungendo ad S i fluent della lista di ADD
+        // della regola e rimuovendo quelli della lista di DELETE
+        pop(R) e applica R trasformando S
+
+**(\*)NB**: si noti che l’ordine con cui i sottogoal vengono inseriti nello stack rappresenta un **punto di scelta non deterministica** (ordinamento parziale).
+- la congiunzione rimane sullo stack e verrà riverificata dopo (provo tutte le combinazioni, vedi dopo)
+- interacting goals
+
+Considerazioni:
+1. Il goal è la prima pila di obiettivi.
+    - Suddividere il problema in sottoproblemi: ciascuno per un componente dell'obiettivo originale. 
+    - **NB**: Tali sottoproblemi **possono interagire!**
+2. Abbiamo tanti possibili ordini di soluzione.
+3. Ad ogni passo del processo di risoluzione si cerca di risolvere il goal in cima alla pila.
+    - Quando si ottiene una sequenza di azioni che lo soddisfa, la si applica alla descrizione corrente dello stato ottenendo una nuova descrizione.
+4. Si cerca poi di soddisfare l'obiettivo che è in cima alla pila partendo dalla situazione prodotta dal soddisfacimento del primo obiettivo.
+5. Il procedimento continua fino allo svuotamento della pila.
+6. Quando in cima alla pila si incontra una congiunzione si verifica che tutte le sue componenti siano effettivamente soddisfatte nello stato attuale. Se una componente non è soddisfatta (problema dell’interazione tra goal è spiegato più avanti) si reinserisce nella pila e si continua.
+
+
+
+```dov'è la ricerca e dov'è lo spazio degli stati?```
+Nell'esempio da slide 39 a 41 si nota che lo spazio degli stati è definito dagli operatori che vengono applicati per ridurre un goal. La ricerca a questo punto è dettata quale mossa si sceglie di applicare per ridurre un goal, e dall'ordine con cui si sceglie di risolvere i goal facenti parte di una congiunzione.
+
+
+
+**Alcuni problemi**
+1. Grafo di ricerca molto vasto. 
+    - Nell’esempio abbiamo visto un cammino ma in realtà ci sono varie alternative
+    - Abbiamo delle diramazioni a causa di
+        - scelte non deterministiche ordinamento dei goal
+        - più operatori applicabili per ridurre un goal
+    - soluzione: strategie euristiche
+2. Problema dell’interazione tra goal
+    - Quando due (o più) goal interagiscono ci possono essere problemi di interazione tra le due soluzioni in quanto l'ordine delle azioni diventa importante
+    - Considera una congiunzione di due goal: G1 e G2. L’ordine in cui risolvi i goal cambia la fattibilità:
+        - Magari, Se parti da G1, devi tornare indietro perché G2 è un prerequisito.
+        - Se parti da G2, invece, tutto funziona.
+    - possiamo avere poi dei piani in cui la sequenza di azioni che soddisfa G2 include delle azioni che disfano delle azioni compiuto nel piano per G1
+    - **anomalia di Sussmann!**
+    - scarsa efficenza del piano, se avessi scambiato l'ordine dei goal magari avremmo ottenuto nessun disfacimento e un piano più efficente
+
+La soluzione di un goal (G1) può dipendere dalla soluzione di un altro (G2).
+- Soluzione completa:
+    - provare tutti gli ordinamenti dei goal e dei loro sottogoal.
+- Soluzione pratica (Strips):
+    - provare a risolverli indipendentemente
+    - verificare che la soluzione funzioni
+    - se non funziona, provare gli ordinamenti possibili uno alla volta attivando il backtracking nel punto di scelta evidenziato prima
+
