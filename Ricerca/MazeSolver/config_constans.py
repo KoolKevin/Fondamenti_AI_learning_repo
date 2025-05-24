@@ -3,7 +3,7 @@
 # - l'algoritmo di generazione dei labirinti fa passi 
 #   di due blocchi alla volta (in quanto in mezzo ad 
 #   ogni strada voglio che ci sia un muro)
-GRID_SIZE = 51
+GRID_SIZE = 71
 CELL_SIZE = 10
 
 # Costanti per la finestra e la griglia
@@ -20,6 +20,6 @@ RED = (255, 0, 0)
 
 # tempi di sleep per mostrare la ricerca
 MAZE_GEN_SLEEP_TIME = 0
-MAZE_UPDATE_SLEEP_TIME = 1
-TILE_EXPLORATION_SLEEP_TIME = 0.1
-GOAL_REACHING_SLEEP_TIME = 0.1
+MAZE_UPDATE_SLEEP_TIME = 0.1
+TILE_EXPLORATION_SLEEP_TIME = 0.0
+GOAL_REACHING_SLEEP_TIME = 0.0

@@ -3,7 +3,7 @@ import time
 
 from maze_gen import generate_maze_prim
 from draw import draw_grid 
-from search import dfs, show_path_to_goal
+from search import bfs, dfs, ucs, a_star, show_path_to_goal
 from config_constans import WIDTH, HEIGHT, MAZE_UPDATE_SLEEP_TIME 
 
 
@@ -17,7 +17,7 @@ def main():
     # end = (GRID_SIZE - 2, GRID_SIZE - 2) # (devo considerare anche un muro finale)
     grid, end = generate_maze_prim(screen, start)
     
-    goalNode = dfs(screen, grid, start, end)
+    goalNode = a_star(screen, grid, start, end)
     show_path_to_goal(screen, grid, goalNode)
 
     running = True

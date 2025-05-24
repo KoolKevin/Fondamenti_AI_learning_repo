@@ -1,4 +1,5 @@
 import time
+import math
 from dataclasses import dataclass
 from typing import Optional
 
@@ -23,11 +24,38 @@ class SearchNode:
 
 
 
+# tutte queste funzioni invocano general_search passandole una queueing-fn,
+# ovvero una funziona che ordina la frontiera secondo la logica della ricerca
+# durante i passi di espansione
 def bfs(screen, grid, start, end):
     return general_search(screen, grid, start, end, lambda frontiera, nodiFuturi: frontiera+nodiFuturi) 
 
 def dfs(screen, grid, start, end):
     return general_search(screen, grid, start, end, lambda frontiera, nodiFuturi: nodiFuturi+frontiera) 
+
+def ucs(screen, grid, start, end):
+    def lesserPathCost(frontiera, nodiFuturi):
+        newFrontiera = frontiera+nodiFuturi
+        newFrontiera.sort(key=lambda nodo: nodo.pathCost)
+        return newFrontiera
+    
+    return general_search(screen, grid, start, end, lesserPathCost) 
+     
+def a_star(screen, grid, start, end):
+    def evalNode(node):
+        # distanza euclidea (euristica ottimistica ammissibile)
+        rowDistance = end[0] - node.state.rowPosition
+        colDistance = end[1] - node.state.colPosition
+        heuristicDistanceFromGoal = math.sqrt(rowDistance*rowDistance + colDistance*colDistance)
+        return node.pathCost + heuristicDistanceFromGoal
+    
+    def sortByEval(frontiera, nodiFuturi):
+        newFrontiera = frontiera+nodiFuturi
+        newFrontiera.sort(key=evalNode)
+        return newFrontiera
+    
+    return general_search(screen, grid, start, end, sortByEval)
+
 
 def expand(grid, nodo):
     possibiliNodiFuturi = []
