@@ -31,7 +31,7 @@ def generate_maze(screen, start, end):
                 grid[row + dRow // 2][col + dCol // 2] = TipoCasella.PASSAGGIO 
                 stack.append((nRow, nCol)) # per dfs
                 # stack.insert(0, (nRow, nCol)) # per bfs (non è che generi un buon labirinto)
-                time.sleep(MAZE_GEN_SLEEP_TIME) # per la visualizzazione
+                # time.sleep(MAZE_GEN_SLEEP_TIME) # per la visualizzazione
                 draw_grid(screen, grid)
                 break
         # in python un for può avere un else che viene eseguito 
@@ -100,8 +100,8 @@ def generate_maze_prim(screen, start):
                 grid[r][c] = TipoCasella.PASSAGGIO
                 grid[between_r][between_c] = TipoCasella.PASSAGGIO
                 add_walls(r, c)
-                draw_grid(screen, grid)  # facoltativo: visualizzazione animata
-                time.sleep(MAZE_GEN_SLEEP_TIME) # per la visualizzazione
+                # draw_grid(screen, grid)  # facoltativo: visualizzazione animata
+                # time.sleep(MAZE_GEN_SLEEP_TIME) # per la visualizzazione
 
     # Imposta inizio e fine
     grid[startRow][startCol] = TipoCasella.START

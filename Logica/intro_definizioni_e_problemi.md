@@ -119,13 +119,13 @@ Date queste definizioni principali possiamo definire:
 
 ### Semantica
 ```bisogna capire implicazioni ed equivalenze come funzionano```
-l'implicazione locica (->) è diversa in linguaggio naturale (se -> allora) rispetto a ciò che si intende in logica
+l'implicazione logica (->) è diversa in linguaggio naturale (se -> allora) rispetto a ciò che si intende in logica
 - se chesani <18 anni, allora ha il biglietto gratis sull'autobus -> vero 
 
 
 Abbiamo una difficoltà, accennata nell'osservazione importante di sopra. 
 - Con la semantica vogliamo dare un significato ai simboli;
-- Ogni sistema formale è la modellizzazione di una certa realtà (ad esempio la realtà matematica).
+- Ogni sistema formale è la modellazione di una certa realtà (ad esempio la realtà matematica).
 - Un’interpretazione è la costruzione di un rapporto fra i simboli del sistema formale e tale realtà (chiamata anche dominio del discorso). 
 
 ```Ogni formula atomica o composta della logica dei predicati del primo ordine può assumere il valore vero o falso in base alla frase che rappresenta nel dominio del discorso.```
@@ -133,7 +133,7 @@ Abbiamo una difficoltà, accennata nell'osservazione importante di sopra.
 Come risolvere?
 
 
-**interpretazine**
+**interpretazione**
 Dato un linguaggio del primo ordine L, un'interpretazione per L definisce un dominio non vuoto D e assegna:
 - a ogni simbolo di costante in C, una costante in D;
 - a ogni simbolo di funzione n-ario F, una funzione:
@@ -174,9 +174,9 @@ Una formula F segue logicamente (o è conseguenza logica) da un insieme di formu
 
 **Proprietà**:
 - Se una fbf F segue logicamente da S (S |= F), allora l'insieme S U {~F} è insoddisfacibile.
-    - ogni modello di S è un antimodello di F e viceversa
-- Viceversa, se S U {~F} è insoddisfacibile (e S era soddisfacibile), allora F segue logicamente da S. 
-    - significa che ogni interpretazione che rende valida S non va bene per ~F, e viceversa
+    - ogni modello di S è un antimodello di ~F e viceversa
+- **Viceversa, se S U {~F} è insoddisfacibile (e S era soddisfacibile), allora F segue logicamente da S.**
+    - significa che ogni interpretazione che rende valida S, invalida ~F e viceversa
     - dimostrazioni per assurdo
 
 I **sistemi di refutazione** si basano su questa proprietà:
@@ -243,7 +243,7 @@ Parte Sintattica
     - anche questo non sempre corretto
 
 
-**Derivabilità**
+**Derivabilità** di una formula data una teoria == se esiste una dimostrazione
 - **Dimostrazione**: sequenza finita di fbf f1, f2, ..., fn, tale che ciascuna fi o è un assioma oppure è ricavabile dalle fbf precedenti **mediante una regola di inferenza**.
 - **Teorema**: L'ultima fbf di ogni dimostrazione.
 - **Prova del teorema**: sequenza di regole di inferenza applicate
@@ -254,8 +254,10 @@ Una fbf F è derivabile in una teoria T (T |- F) se esiste una sequenza di fbf f
 
 
 **Decidibilità**
-Teoria decidibile: teoria per la quale esiste un metodo meccanico per stabilire se una qualunque fbf è un teorema o non lo è (in un numero di passaggi finito).
-- Il calcolo dei predicati del primo ordine non è decidibile, ma semidecidibile: se una formula è un teorema, esiste un metodo meccanico che la deriva in un numero finito di passi. Se invece la formula non è un teorema, non è garantita, in generale, la terminazione del metodo meccanico 
+Teoria decidibile: teoria per la quale esiste un metodo meccanico per stabilire se una qualunque fbf è un teorema **o non lo è** (in un numero di passaggi finito).
+- Il calcolo dei predicati del primo ordine non è decidibile, ma semidecidibile:
+    - se una formula è un teorema, esiste un metodo meccanico che la deriva in un numero finito di passi.
+    - Se invece la formula non è un teorema, non è garantita, in generale, la terminazione del metodo meccanico 
 
 
 
@@ -267,6 +269,8 @@ Una teoria assiomatica è completa se tutte le fbf che seguono logicamente dalla
 Se T è **corretta e completa** è garantita l’equivalenza tra l'aspetto sintattico e semantico
 - T |- F <-> T|= F
 
+```differenza tra derivabilità e conseguenza logica è che la prima utilizza dei metodi di inferenze (che sono solo trasformazioni sintattiche), mentre l'altra va a ragionare su modelli e interpretazioni dei simboli (semantica)```
+
 - correttezza (soundness): la derivazione produce solo sentenze che sono conseguenza logica.
     - abduzione non è corretta
 - completezza (completeness): la derivazione puo’ produrre tutte le conseguenze logiche
@@ -277,7 +281,7 @@ Ancora in altri termini:
 - correttezza: ogni formula derivata è una conseguenza logica
 - completezza: ogni conseguenza logica può essere derivata
 
-**Conclusione**: se la teoria è corretta e completa: allora possiamo lavorare solo sul piano sintattico (**CHIEDI A CHESANI**)
+**Conclusione**: se la teoria è corretta e completa: allora possiamo lavorare solo sul piano sintattico
 
 
 
