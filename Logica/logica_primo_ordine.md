@@ -20,7 +20,11 @@ Vedremo la dimostrazione di teoremi basata su:
 
 
 ### trasformazione clausole
-Per dimostrare algoritmicamente la conseguenza logica di una formula f da un insieme di assiomi di partenza, è bene trasformare f nella forma a clausole generali (congiunzione di disgiunzioni di letterali == insieme di formule con dentro or, in and tra di loro )  
+Per dimostrare algoritmicamente la conseguenza logica di una formula f da un insieme di assiomi di partenza, è bene trasformare f nella forma a **clausole generali**
+- clausole generali         == clausole in cui possono comparire variabili nei letterali
+
+- una singola clausola      == disgiunzione di letterali
+- un'intera teoria          == congiunzione di disgiunzioni di letterali == insieme di clausole in and   
 - obiettivo finale: avere una formula con dentro solo degli and/or senza quantificatori/implicazione/ecc. tra le scatole
 
 Una qualunque fbf della logica dei predicati si può trasformare in un insieme di clausole generali.
@@ -46,8 +50,9 @@ ogni variabile quantificata esistenzialmente viene sostituita da una funzione de
 
 **NB**: Qualunque teoria del primo ordine T può essere trasformata in una teoria T’ in forma a clausole.
 - Anche se T non è logicamente equivalente a T’ (a causa dell'introduzione delle funzioni di Skolem), vale comunque la seguente proprietà 
-- teorema: Sia T una teoria del primo ordine e T’ una sua trasformazione in clausole. Allora T è insoddisfacibile se e solo se T’ è insoddisfacibile.
-- Ricorda: T è ottenuto come assiomi + una formula negata ~F, se la teoria è insoddisfacibile allora F è conseguenza logica degli assiomi
+- **teorema**: Sia T una teoria del primo ordine e T’ una sua trasformazione in clausole. Allora T è insoddisfacibile se e solo se T’ è insoddisfacibile.
+
+Ricorda: T è ottenuto come assiomi + una formula negata ~F, se T è insoddisfacibile allora F è conseguenza logica degli assiomi
 
 
 
@@ -123,6 +128,11 @@ ogni volta che faccio una sostituzione più specifica perdo un po' di informazio
 
 
 ## Il principio di Risoluzione per le clausole generali
+Abbiamo imparato che l'unificazione ci permette di stabilire quando due espressioni/formule possono coincidere procedendo a opportune sostituzioni.
+
+A questo punto possiamo applicare la risoluzione anche nella logica del primo ordine procedendo come nella logica proposizionale (prima unifichiamo per capire a quali coppie di clausole possiamo applicare la risoluzione per generare un risolvente).
+
+
 Siano C1 e C2 due clausole del tipo:
 - C1 = A1 v ... v An, C2 = B1 v ... v Bm
 - dove Ai (i=1..n) e Bj (j=1..m) sono atomi positivi o negativi (letterali) in cui possono comparire variabili.

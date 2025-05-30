@@ -307,7 +307,7 @@ Assunzione del mondo chiuso:
 - Concetti base della logica come linguaggio per la rappresentazione della conoscenza e ragionamento:
     - sintassi: struttura formale delle sentenze
     - semantica: verita` di sentenze rispetto ad interpretazioni/modelli
-- conseguenza logica (entailment): sentenza necessariamente vera data un’altra sentenza
-- inferenza: derivare (sintatticamente) sentenze da altre sentenze
+- **conseguenza logica**: sentenza necessariamente vera data un’altra sentenza (vera per qualsiasi interpretazione della teoria di partenza)
+- **inferenza**: **derivare (sintatticamente) sentenze da altre sentenze**
     - correttezza (soundness): la derivazione produce solo sentenze che sono conseguenza logica.
     - completezza (completeness): la derivazione puo’ prdurre tutte le conseguenze logiche.
