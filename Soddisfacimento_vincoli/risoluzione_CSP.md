@@ -15,46 +15,57 @@ I primi due riguardano le euristiche sulla strategia di ricerca. Il terzo c'è d
 
 
 ## Algoritmi generativi:
-Si basano su **check dei vincoli a posteriori**
+Si basano su **check dei vincoli a posteriori**; ovvero, dopo aver fatto uno o più assegnamenti
 
 **Generate & test**
 - molto semplice: genero una soluzione esplorando in profondità un ramo dell'albero e verifico se rispetta i vincoli
     - se si -> ho trovato una soluzione
     - se no -> riprovo con un altro ramo
     - non necessariamente devo esplorare tutto l'albero in larghezza, ma almeno una soluzione la devo generare e quindi in profondità si
-- Inefficienza di base: i vincoli sono utilizzati per limitare lo spazio delle soluzioni **dopo** che la ricerca è stata effettuata, quindi a posteriori
+- **Inefficienza di base**: i vincoli sono utilizzati per limitare lo spazio delle soluzioni **dopo** che la ricerca è stata effettuata, quindi a posteriori
+    - si considerano solo i vincoli relativi alla variabile che si sta assegnando
+    - i vincoli con le altre variabili si considerano solo dopo che è stata prodotta una soluzione
 - sembra stupido ma in realtà in alcune situazioni è una buona soluzione
 
 **Standard backtracking**
 - A ogni istanziazione di una variabile si preoccupa di verificare la coerenza della variabile appena istanziata con quelle assegnate **precedentemente**.
     - l'utilizzo dei vincoli è più efficace del precedente perché non si prosegue la ricerca in rami che, ai primi livelli dell'albero, presentano delle contraddizioni
-- I vincoli sono utilizzati **all'indietro**
-    - ovvero si controllano solo le variabili già assegnate 
-- questo porta a una effettiva riduzione dello spazio di ricerca.
-- Tuttavia, questa riduzione viene fatta a posteriori, cioè dopo aver effettuato il tentativo. Questo può portare all'esplorazione di lunghi rami che solo alla fine si rivelano morti
-    - conseguente lungo backtracking
-- La ricerca procede anche nel caso in cui una variabile ancora libera (magari in fondo nella coda di quelle da assegnare), non presenta più posizioni disponibili.
+- I vincoli sono utilizzati **all'indietro**; ovvero, **si controllano solo le variabili già assegnate** 
+- Questo porta a una effettiva riduzione dello spazio di ricerca. **tuttavia, questa riduzione viene fatta a posteriori, cioè dopo aver effettuato il tentativo.** Questo può portare all'esplorazione di lunghi rami che solo alla fine si rivelano morti
+    - con seguente lungo backtracking
+- **La ricerca procede anche nel caso in cui una variabile ancora libera (magari in fondo nella coda di quelle da assegnare), non presenta più posizioni disponibili.**
 
 
-**Limiti dell’uso A Posteriori dei Vincoli**
+
+
+## Limiti dell’uso A Posteriori dei Vincoli
 - Il problema appena visto nello standard backtracking è un difetto da attribuire a tutti i metodi che utilizzano i vincoli passivamente, cioè posteriormente ad un tentativo di istanziazione.
-- **Utilizzando anche i vincoli che coinvolgono variabili ancora libere** il problema sarebbe stato rilevato in anticipo evitando così costosi
-backtracking.
+- **Utilizzando anche i vincoli che coinvolgono variabili ancora libere** il problema sarebbe stato rilevato in anticipo evitando così costosi backtracking.
 
 - posteriori: considero i vincoli delle variabili assegnate
 - priori: considero i vincoli di tutte le variabili (anche prima del loro assegnamento) 
+
+
 
 
 ### Algoritmi di propagazione
 Cosa significa propagare i vincoli? 
 - check dei vincoli a priori
 
-L'idea che sta alla base degli algoritmi di propagazione consiste in un utilizzo attivo dei vincoli nella guida del pruning a priori dell'albero decisionale associando, **a ciascuna variabile** (anche quelle libere), l'insieme di valori ammissibili rimanenti dopo ogni assegnazione.
+L'idea che sta alla base degli algoritmi di propagazione consiste in un utilizzo attivo dei vincoli nella guida del pruning a priori dell'albero decisionale **associando, a ciascuna variabile** (anche quelle libere), **l'insieme di valori ammissibili rimanenti dopo ogni assegnazione**.
 - Questi insiemi (domini) vengono perciò ridotti nel corso della computazione permettendo di scegliere per le variabili ancora libere valori ammissibili con le variabili già istanziate senza più considerare i vincoli che le legano (sono rimasti solo i valori validi)
-- utilizzare le relazioni tra le variabili del problema, i vincoli, per ridurre lo spazio di ricerca **prima di arrivare al fallimento**.
-    - La propagazione ha l’effetto di ridurre i domini delle variabili future (se un dominio risulta vuoto, fallimento)
-    - Vengono così eliminati rami dell'albero che porterebbero ad un sicuro insuccesso limitando (inutili) backtracking.
-    - si cerca di prevenire il fallimento piuttosto che rimediarlo (può comunque succedere, in quel caso backtracking)
+
+Possiamo, utilizzare le relazioni tra le variabili del problema, i vincoli, per ridurre lo spazio di ricerca **prima di arrivare al fallimento**.
+- La propagazione ha l’effetto di ridurre i domini delle variabili future (se un dominio risulta vuoto, fallimento)
+- Vengono così eliminati rami dell'albero che porterebbero ad un sicuro insuccesso limitando (inutili) backtracking.
+- si cerca di prevenire il fallimento piuttosto che rimediarlo (può comunque succedere, in quel caso backtracking)
+
+
+
+
+
+
+
 
 
 **Forward checking**
@@ -69,17 +80,20 @@ istanziato dai domini delle variabili **non ancora istanziate**.
     - In FC questo è sempre vero in quanto i valori che rimangono sono sempre validi
 
 **NMB**: 
-Il forward checking sembra molto meglio rispetto a standard backtracking. Il problema è che ogni volta che assegno un valore ad una variabile vado a scorrere tutte le mie variabili "adiacenti" (quelle con cui ho dei vincoli) e per ognuna di queste tutti i valore del suo dominio per controllare i miei vincoli. **Il costo computazionale del backtracking si è spostato nella propagazione dei vincoli**
+Il forward checking sembra molto meglio rispetto a standard backtracking. Il problema è che ogni volta che assegno un valore ad una variabile vado a scorrere tutte le mie variabili "adiacenti" (quelle con cui ho dei vincoli) e per ognuna di queste, tutti i valore del suo dominio per controllare i miei vincoli. **Il costo computazionale si è spostato dal backtracking alla propagazione dei vincoli**
 - ESAME: a volte nell'esame ci sono i pasti gratis
 
 
 
-**Partial & full look-ahead**
-Ad ogni istanziazione viene garantita, come per il Forward Checking, la compatibilità dei vincoli contenenti la variabile appena assegnata
-con le precedenti (istanziate) e le successive (libere). **In più viene sviluppato il look ahead**, che controlla l'esistenza, nei domini associati alle variabili ancora libere, di valori compatibili con i vincoli contenenti solo variabili non istanziate.
 
-In FC, la propagazione dei vincoli mi faceva rimanere nelle variabili non istanziate dei valori sicuramente validi con i vincoli delle variabili istanziate.
-Tuttavia, non c'è alcun controllo sui vincoli tra le variabili non istanziate. 
+
+**Partial & full look-ahead**
+Ad ogni istanziazione viene garantita,**come per il Forward Checking**, la compatibilità dei vincoli contenenti la variabile appena assegnata
+con le precedenti (istanziate) e le successive (libere).
+
+**In più viene sviluppato il look ahead, che controlla l'esistenza, nei domini associati alle variabili ancora libere, di valori compatibili con i vincoli contenenti solo variabili non istanziate.**
+
+**In FC**, la propagazione dei vincoli mi faceva rimanere nelle variabili non istanziate dei valori sicuramente validi con i vincoli delle variabili istanziate. Tuttavia, **non c'era alcun controllo sui vincoli tra le variabili non istanziate**. 
 - **Il backtracking avveniva quando i valori rimanenti di quest'ultime non erano compatibili**
 
 I domini associati a ogni variabile vengono ridotti propagando anche le relazioni contenenti **coppie** di variabili non istanziate.
@@ -104,6 +118,8 @@ Nota: utile vedere l'esempio a slide 52. Notare come i LA vengono calcolati cons
 
 Il carico computazionale dovuto alle continue verifiche della consistenza dei vincoli, e quindi alla propagazione piuttosto pesante, non porta al raggiungimento di vantaggi quando le dimensioni del problema diventano considerevoli ai primi livelli dell'albero.
 - Nell'esempio delle otto regine infatti i domini ridotti, dopo le prime due istanziazioni, dalle tecniche in esame sono identici ma, mentre il Look Ahead verifica la consistenza dei vincoli su tutte le coppie di variabili ancora libere (la maggioranza), il Forward Checking esegue molte meno verifiche guadagnando in efficienza.
+
+
 
 
 

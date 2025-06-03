@@ -19,7 +19,7 @@ Risolvere un CSP significa trovare una valore per tutte le variabili, ognuna che
 - **goal test** è un insieme di vincoli che specificano le combinazioni di valori permessi
 - **operatori** possono essere assegnamenti di valori a variabili (labeling)
 
-CSP come esplorazione di un albero con DFS
+```CSP come esplorazione di un albero con DFS```
 - Stato iniziale: assegnamento vuoto { }
 - Funzione Successore: assegna un valore ad una variabile non ancora legata (in modo che sia legale con gli assegnamenti già fatti).
     - Fallisci se non esiste
