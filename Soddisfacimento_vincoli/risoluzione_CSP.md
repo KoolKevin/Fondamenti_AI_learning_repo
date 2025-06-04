@@ -29,7 +29,11 @@ Si basano su **check dei vincoli a posteriori**; ovvero, dopo aver fatto uno o p
 
 **Standard backtracking**
 - A ogni istanziazione di una variabile si preoccupa di verificare la coerenza della variabile appena istanziata con quelle assegnate **precedentemente**.
-    - l'utilizzo dei vincoli è più efficace del precedente perché non si prosegue la ricerca in rami che, ai primi livelli dell'albero, presentano delle contraddizioni
+- Se l'assegnamento tentato non rispetta i vincoli con le variabili precedenti si fa un **backtracking sull'ultima variabile assegnata**, e si prova un' altro valore del dominio.
+    - se non ce ne sono, ulteriore backtracking e così via
+- l'utilizzo dei vincoli è più efficace del precedente perché non si prosegue la ricerca in rami che, ai primi livelli dell'albero, presentano delle contraddizioni
+
+Considerazioni:
 - I vincoli sono utilizzati **all'indietro**; ovvero, **si controllano solo le variabili già assegnate** 
 - Questo porta a una effettiva riduzione dello spazio di ricerca. **tuttavia, questa riduzione viene fatta a posteriori, cioè dopo aver effettuato il tentativo.** Questo può portare all'esplorazione di lunghi rami che solo alla fine si rivelano morti
     - con seguente lungo backtracking
@@ -72,7 +76,7 @@ Possiamo, utilizzare le relazioni tra le variabili del problema, i vincoli, per 
 Viene utilizzata, **dopo ogni assegnamento**, la propagazione dei vincoli che consiste nell'eliminazione dei valori incompatibili con quello appena
 istanziato dai domini delle variabili **non ancora istanziate**.
 - Se il dominio associato ad una variabile libera presenta un solo valore l'assegnamento può essere effettuato senza sforzo computazionale.
-- Se ad un certo punto ci si accorge che un dominio associato risulta vuoto, **il meccanismo del Forward Checking fallisce** e fa backtracking.
+- Se ad un certo punto ci si accorge che un dominio associato risulta vuoto, **il meccanismo del Forward Checking fallisce** e fa backtracking sull'ultima variabile assegnata.
 
 **NB**: L'assegnazione di un valore ad una variabile ha ripercussioni sull'insieme dei valori disponibili per le variabili ancora libere.
 - In questo modo i vincoli agiscono in avanti (forward) e limitano lo spazio delle soluzioni prima che vengano effettuati tentativi su di esso.
@@ -93,12 +97,20 @@ con le precedenti (istanziate) e le successive (libere).
 
 **In più viene sviluppato il look ahead, che controlla l'esistenza, nei domini associati alle variabili ancora libere, di valori compatibili con i vincoli contenenti solo variabili non istanziate.**
 
+In pratica:
+- Per tutte le variabili libere, considero uno alla volta ogni valore presente nel suo dominio
+- Per il valore scelto, controllo se esiste nei domini di **tutte** le altre variabili libere almeno un valore compatibile con il valore del primo dominio che rispetta i vincoli
+    - NB: tutte, siamo in un caso di _and_
+- se si, il valore corrente del primo dominio rimane
+- se no, il valore corrente subisce pruning 
+- **Questo viene effettuato per tutti i valori di tutte le variabili libere...** Molto costoso
+
 **In FC**, la propagazione dei vincoli mi faceva rimanere nelle variabili non istanziate dei valori sicuramente validi con i vincoli delle variabili istanziate. Tuttavia, **non c'era alcun controllo sui vincoli tra le variabili non istanziate**. 
 - **Il backtracking avveniva quando i valori rimanenti di quest'ultime non erano compatibili**
 
 I domini associati a ogni variabile vengono ridotti propagando anche le relazioni contenenti **coppie** di variabili non istanziate.
 - In altre parole, nei domini delle variabili libere vengono eliminati dai valori rimanenti dopo la propagazione stile FC, anche quei valori non compatibili secondo i vincoli tra le coppie di variabili libere 
-    - e.g. per ogni valore in D1 se esiste almeno un valore in D2 e almeno un valore in D3 compatibili (sono eliminati i valori di D1 per i quali non esiste alcun valore compatibile in D2 e in D3).
+    - e.g. PLA verifica che per ogni valore in D1 se esiste almeno un valore in D2 e almeno un valore in D3 compatibili (sono eliminati i valori di D1 per i quali non esiste alcun valore compatibile in D2 e in D3).
 - Viene verificata quindi la possibilità di una futura assegnazione consistente fra le coppie di variabili libere.
 
 **Strategia di Partial Look Ahead (PLA) o Full Look Ahead (FLA)**
