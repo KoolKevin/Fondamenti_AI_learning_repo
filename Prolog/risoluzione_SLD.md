@@ -49,16 +49,16 @@ Dato un programma logico P e un goal G0, una risposta per P U {G0} è una sostit
 
 
 ### Strategia di Selezione e Ricerca
-Nella risoluzione SLD così come è stata enunciata sihanno due forme di non determinismo:
+Nella risoluzione SLD così come è stata enunciata si hanno due forme di non determinismo:
 
 1. La prima forma di non determinismo è legata alla selezione di un atomo Am del goal da unificare con la testa di una clausola, e viene risolta definendo una particolare regola di calcolo. 
     - La regola di calcolo influenza solo l'efficienza. Non influenza né la correttezza né la completezza del dimostratore.
     - Tuttavia regole di calcolo diverse influiscono sulla struttura dell'albero SLD per quanto riguarda sia l'ampiezza sia la profondità. Quindi, qualunque sia R
-        - ilnumero di cammini di successo (se in numero finito) è lo stesso in tutti gli alberi SLD costruibili per P U {G0}.
+        - il numero di cammini di successo (se in numero finito) è lo stesso in tutti gli alberi SLD costruibili per P U {G0}.
         - **NB**: R influenza solo il numero di cammini di fallimento (finiti ed infiniti). Per questo motivo bisogna essere consci della regola di calcolo che si sta adottando durante la scrittura di un programma logico, altrimenti si rischia di introdurre dei cicli infiniti.
     - **Indipendenza dalla regola di calcolo**: 
         - Dato un programma logico P, l'insieme di successo di P non dipende dalla regola di calcolo utilizzata dallarisoluzione SLD.
-    - **NB**: Tuttavia bisogna essere coscien
+        - **NB**: Tuttavia bisogna esserne coscienti per evitare di aggiungere strade di fallimento (anche infinite)
 2. La seconda forma di non determinismo è legata alla scelta di quale clausola del programma P utilizzare in un passo di risoluzione (ne possono esistere molteplici unificabili), e viene risolta definendo una strategia di ricerca.
     - Questa forma di non determinismo implica che **possano esistere più soluzioni alternative per uno stesso goal**
         - in base all'ordine delle clausolo con cui si sceglie di unificare, possono essere prodotte soluzioni diverse
@@ -69,9 +69,9 @@ Nella risoluzione SLD così come è stata enunciata sihanno due forme di non det
 Una forma grafica utile per rappresentare la risoluzione SLD e questa forma di non determinismo sono gli alberi SLD. 
 
 - Ad ogni ramo di un albero SLD corrisponde una derivazione SLD.
-    - Ogni ramo che termina con il nodo vuoto (:-) rappresenta unaderivazione SLD di successo.
+    - Ogni ramo che termina con il nodo vuoto (:-) rappresenta una derivazione SLD di successo.
 - **La regola di calcolo influisce sulla struttura dell'albero** perquanto riguarda sia l'ampiezza sia la profondità.
-    - Tuttavia noninfluisce su correttezza e completezza.
+    - Tuttavia non influisce su correttezza e completezza.
     - Quindi, qualunque sia R, il numero di cammini di successo (se in numero finito) è lo stesso in tutti gli alberi SLD costruibili per P U {G0} .
     - R influenza solo il numero di cammini di fallimento (finiti ed infiniti).
 
@@ -84,10 +84,10 @@ Le modalità di esplorazione dell'albero più comuni sono:
 - breadth first
 
 Entrambe le modalità implicano l'esistenza di un meccanismo di **backtracking per esplorare tutte le strade alternative** che corrispondono ai diversi nodi dell'albero.
-- Nel caso di alberi SLD, attivare il “backtracking” implica che tutti ilegami per le variabili determinati dal punto di “backtracking” in poi non devono essere più considerati.
+- Nel caso di alberi SLD, attivare il “backtracking” implica che tutti i legami per le variabili determinati dal punto di “backtracking” in poi non devono essere più considerati.
 
 
-Per quanto riguarda la strategia di selezione, prolog adotta la strategia left-most, scegle di risolvere sempre l'atomo più a sinistra
+**Per quanto riguarda la strategia di selezione, prolog adotta la strategia left-most, scegle di risolvere sempre l'atomo più a sinistra**
 
 
 
@@ -99,7 +99,7 @@ Per quanto riguarda la strategia di selezione, prolog adotta la strategia left-m
 Il linguaggio Prolog, adotta la **strategia in profondità con "backtracking"** perché può essere realizzata in modo efficiente attraverso un unico stack di goal.
 - tale stack rappresenta il ramo che si sta esplorando e contiene opportuni riferimenti a rami alternativi da esplorare in caso di fallimento (punti di backtracking).
 
-Per quello che riguarda la scelta fra nodi fratelli, sempre per motivi di efficenza, la strategia Prolog li **ordina seguendo l'ordine testuale delle clausole** che lihanno generati.
+Per quello che riguarda la scelta fra nodi fratelli, sempre per motivi di efficenza, la strategia Prolog li **ordina seguendo l'ordine testuale delle clausole** che li hanno generati.
 - **NB**: La strategia di ricerca adottata in Prolog è dunque **non completa**.
 - possono crearsi dei loop infiniti anche se una soluzione esiste
 - importante per il programmatore prolog tenere a mente questa cosa ed ordinare le clausole correttamente
@@ -110,7 +110,7 @@ Per quello che riguarda la scelta fra nodi fratelli, sempre per motivi di effice
 - Nel caso vi siano più clausole la cui testa è unificabile con G1,la risoluzione di G1 viene considerata come un **punto di scelta** (choice point) nella dimostrazione.
 - In caso di fallimento in un passo di dimostrazione, Prolog ritorna in backtracking all'ultimo punto di scelta in senso cronologico (il più recente), e seleziona la clausola successiva utilizzabile in quel punto per la dimostrazione.
 - In pratica, durante la risoluzione prolog gestisce i punti di scelta con uno stack 
-    - va in DFS e quindi aggiunge i punti di scelta in in testa, in caso di backtracking fa un pop
+    - va in DFS e quindi aggiunge i punti di scelta in testa, in caso di backtracking fa un pop
 
 
 
@@ -120,9 +120,7 @@ Per quello che riguarda la scelta fra nodi fratelli, sempre per motivi di effice
 Prolog deve decidere una clausola tra quelle con cui può unificare 
 - la scelta è quella dell'ordine con cui vengono scritte (ordine sintattico)
     - le soluzioni non cambiano (SLD corretto e completo) ma cambiamo l'ordine di esplorazione e magari evitiamo loop
-- punto di scelta 
-
-... incompletezza implementativa dovuta ai loop di DFS
+    - ... **incompletezza implementativa** dovuta ai loop di DFS
 
 
 
