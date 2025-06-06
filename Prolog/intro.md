@@ -61,7 +61,7 @@ NB: che la sintassi sembra avere più letterali positivi, in realtà se trasform
 ### Come sono quantificate le variabili
 Le variabili all'interno di una clausola sono sempre quantificate universalmente.
 
-Tuttavia è comdoo fare una considerazione:
+Tuttavia è comodo fare una considerazione:
 - per le regole abbiamo delle variabili che compaiono solo nel corpo Yk, e delle variabili che compaiono sia nella testa che nel corpo Xk
 - tutte queste variabili sono quantificate universalmente
 - tuttavia una maniera equivalente più chiara di quantificare le variabili che compaiono solo nel corpo della regola è la quantificazione esistenziale

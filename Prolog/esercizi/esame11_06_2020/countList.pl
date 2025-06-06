@@ -7,8 +7,10 @@
 % ?-countList(9, [3,3,2,3,1], X).
 %   X = 0
 
-countList(_, [], 0) :-
-    !. % prolog lascia aperto il punto di scelta anche se sotto non unifica niente (infatti restituisce false); taglio via
+countList(_, [], 0).
+
+% countList(_, [], 0) :-
+%     !. % prolog lascia aperto il punto di scelta anche se sotto non unifica niente (infatti restituisce false); taglio via
 
 countList(El, [El|Coda], N) :-
     !,
