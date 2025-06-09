@@ -20,7 +20,7 @@ La CWA diventa problematica se si cerca di modellare un sistema dinamico che **e
 - la CWA assume che quello che non è vero ora sia falso
 - ma qualcosa può essere vero fino ad oggi ma non essere più vero domani, o viceversa
 - non sempre quindi la possiamo usare 
-- soluzioni? e.g. tre valori di verità: vero, falso, ignoto
+- soluzioni? e.g. più valori di verità: vero, falso, ignoto; grammatiche LTL
 
 
 
@@ -76,11 +76,11 @@ Per risolvere goal generali, cioè che possono contenere letterali negativi, si 
 Sia :- L1, ..., Lm il goal (generale) corrente, in cui L1, ..., Lm sono letterali (atomi o negazioni di atomi). Un passo di risoluzione SLDNF si schematizza come segue:
 - NON si seleziona alcun letterale negativo Li, se non è "ground" (capiamo meglio dopo il perchè);
 - Se il letterale selezionato Li è positivo (siamo nel caso normale), si compie un passo ordinario di risoluzione SLD
-- Se Li è del tipo ~A (con A "ground") ed A fallisce finitamente (cioè ha un albero SLD di fallimento finito), Li ha successo e si ottiene il nuovo risolvente
+- **Se Li è del tipo ~A** (con A "ground") **ed A fallisce finitamente** (cioè ha un albero SLD di fallimento finito), **Li ha successo** e si ottiene il nuovo risolvente
     - :- L1, ..., Li-1, Li+1, ..., Lm
  
-In pratica, metto da parte il not e prima cerco di dimostrare il goal senza, poi lo recupero e lo applico al risultato ottenuto.
-- Stiamo applicando CWA/NF: se A NON è conseguenza logica (derivabile) del mio programma, allora possiamo inferire ~A
+In pratica, metto da parte il not e prima cerco di dimostrare il goal senza, poi lo recupero e lo applico al risultato ottenuto (risultato inteso come true o false).
+- **Stiamo applicando CWA/NF: se A NON è conseguenza logica (derivabile) del mio programma, allora possiamo inferire ~A**
     - viceversa, se A è conseguenza logica allora sappiamo che ~A è falso e quindi Li fallisce.  
 - riciclo il codice SLD
 
@@ -99,7 +99,7 @@ Iniziamo col notare che, considerando solo letterali negativi ground, risolvere 
 
 
 **In PROLOG**
-Il linguaggio Prolog seleziona sempre il letterale più a sinistra, **senza controllare che sia "ground"** e quindi non adotta una regola di selezione safe
+Il linguaggio Prolog seleziona sempre il letterale più a sinistra, **senza controllare che sia "ground"** e quindi **non adotta una regola di selezione safe**
 - Realizzazione **non corretta** della risoluzione SLDNF (già prolog non era completo...)
 
 Si noti che, data la strategia di risoluzione utilizzata dal Prolog è possibile che la dimostrazione di A (per cercare di dimostrare ~A) non abbia termine ossia che il Prolog vada in loop in tale dimostrazione (incompletezza).
