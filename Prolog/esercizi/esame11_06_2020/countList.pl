@@ -10,7 +10,7 @@
 countList(_, [], 0).
 
 % countList(_, [], 0) :-
-%     !. % prolog lascia aperto il punto di scelta anche se sotto non unifica niente (infatti restituisce false); taglio via
+%     !. % prolog lascia aperto il punto di scelta anche se sotto non unifica niente (restituisce false)? Nel dubbio taglio via
 
 countList(El, [El|Coda], N) :-
     !,
