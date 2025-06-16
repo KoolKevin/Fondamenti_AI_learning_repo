@@ -42,7 +42,7 @@ intuitiva
 
 
 
-- lavariabile **_** è una variabile speciale che unifica con qualsiasi cosa.
+- la variabile **_** è una variabile speciale che unifica con qualsiasi cosa.
     - Serve ad esprimere l'idea di un qualcosa di cui non ci interessa sapere il valore ma sappiamo che esiste (o ce ne vogliamo assicurare). 
     - nei linguaggi procedurali viene chiamata **variabile muta**
     - tutte le volte che si può utilizzare una variabile muta conviene farlo.
@@ -75,7 +75,7 @@ Da cosa capisco che una variabile non mi serve?
 - length(L, N)
 - append(L1,L2,L3)
     - concatenazione di due liste
--  delete1(El,L,L1) e delete1(El,L,L1)
+- delete1(El,L,L1) e delete(El,L,L1)
     - rispettivamente: elimina il primo termine unificabile con El, elimina tutti i termini unificabili con El, 
     - **NB**: attenzione alla mutua esclusione!
 - reverse(L, Lr) 
