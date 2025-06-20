@@ -1,3 +1,10 @@
+Strumento adatto per
+- rappresentare la conoscenza
+    - knowledge bases
+- fare ragionamenti su questa conoscenza
+    - inferenze 
+- rapid prototyping
+
 prolog è bellissimo! (Chesani), ma non si presta a risolvere a alcuni problemi... in particolare, è lento... (computazionalmente costoso)
 - però è goated a fare i prototipi velocemente (rapid prototyping === prolog)
 - The Power of Prolog. Introduction to modern Prolog https://www.metalevel.at/prolog
