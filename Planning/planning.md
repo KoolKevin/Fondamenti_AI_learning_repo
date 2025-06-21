@@ -210,7 +210,7 @@ A volte ADD e DELETE list sono rappresentate come un'unica EFFECT list con atomi
 
 **NB**: Frame problem risolto con la **Strips Assumption**
 - Tutto ciò che non è specificato nella ADD e DELETE list resta immutato
-- Non devo specificare più tutto quello che non cambia, mi basta definire gli effetti negativi e positivi della mia azione medinate le liste degli add e dei delete
+- Non devo specificare più tutto quello che non cambia, mi basta definire gli effetti negativi e positivi della mia azione mediante le liste degli add e dei delete
 
 
 
@@ -314,8 +314,8 @@ Nell'esempio da slide 39 a 41 si nota che lo spazio degli stati è definito dagl
         - Magari, Se parti da G1, devi tornare indietro perché G2 è un prerequisito.
         - Se parti da G2, invece, tutto funziona.
     - possiamo avere poi dei piani in cui la sequenza di azioni che soddisfa G2 include delle azioni che disfano delle azioni compiuto nel piano per G1
-    - **anomalia di Sussmann!**
-    - scarsa efficenza del piano, se avessi scambiato l'ordine dei goal magari avremmo ottenuto nessun disfacimento e un piano più efficente
+        - **anomalia di Sussmann!**
+        - scarsa efficenza del piano, se avessi scambiato l'ordine dei goal magari avremmo ottenuto nessun disfacimento e un piano più efficente
 
 La soluzione di un goal (G1) può dipendere dalla soluzione di un altro (G2).
 - Soluzione completa:
